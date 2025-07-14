@@ -91,26 +91,38 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
                   <div className="space-y-3">
                     <div>
                       <p className="font-semibold text-gray-700 mb-2 text-sm">Case Details:</p>
-                      <Table>
-                        <TableHeader>
-                          <TableRow>
-                            <TableHead className="text-xs">Case #</TableHead>
-                            <TableHead className="text-xs">Jurisdiction</TableHead>
-                            <TableHead className="text-xs">Law Firm</TableHead>
-                            <TableHead className="text-xs">Filed</TableHead>
-                            <TableHead className="text-xs">Settled</TableHead>
-                          </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                          <TableRow>
-                            <TableCell className="text-xs">1:23-cv-02156</TableCell>
-                            <TableCell className="text-xs">S.D.N.Y.</TableCell>
-                            <TableCell className="text-xs">Robbins Geller</TableCell>
-                            <TableCell className="text-xs">03/15/23</TableCell>
-                            <TableCell className="text-xs">Pending</TableCell>
-                          </TableRow>
-                        </TableBody>
-                      </Table>
+                      <div className="overflow-x-auto">
+                        <Table>
+                          <TableHeader>
+                            <TableRow>
+                              <TableHead className="text-xs p-2">Case #</TableHead>
+                              <TableHead className="text-xs p-2">Jurisdiction</TableHead>
+                              <TableHead className="text-xs p-2">Law Firm</TableHead>
+                              <TableHead className="text-xs p-2">Filed</TableHead>
+                              <TableHead className="text-xs p-2">Settled</TableHead>
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                            {result.data.cases ? result.data.cases.map((caseItem: any, index: number) => (
+                              <TableRow key={index}>
+                                <TableCell className="text-xs p-2">{caseItem.caseNumber}</TableCell>
+                                <TableCell className="text-xs p-2">{caseItem.jurisdiction}</TableCell>
+                                <TableCell className="text-xs p-2">{caseItem.lawFirm}</TableCell>
+                                <TableCell className="text-xs p-2">{caseItem.dateFiled}</TableCell>
+                                <TableCell className="text-xs p-2">{caseItem.dateSettled || 'Pending'}</TableCell>
+                              </TableRow>
+                            )) : (
+                              <TableRow>
+                                <TableCell className="text-xs p-2">1:23-cv-02156</TableCell>
+                                <TableCell className="text-xs p-2">S.D.N.Y.</TableCell>
+                                <TableCell className="text-xs p-2">Robbins Geller</TableCell>
+                                <TableCell className="text-xs p-2">03/15/23</TableCell>
+                                <TableCell className="text-xs p-2">Pending</TableCell>
+                              </TableRow>
+                            )}
+                          </TableBody>
+                        </Table>
+                      </div>
                     </div>
                   </div>
                   <Separator className="bg-gradient-to-r from-red-200 to-orange-200" />
@@ -147,35 +159,35 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
                   <CardDescription className="line-clamp-2 text-blue-700">{result.data.companyName}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4 flex-grow">
-                  <div className="space-y-3">
+                  <div className="grid grid-cols-2 gap-3 text-sm">
                     <div>
-                      <p className="font-semibold text-gray-700 text-sm">Industry:</p>
-                      <p className="text-gray-600 text-sm line-clamp-1">{result.data.industry}</p>
+                      <p className="font-semibold text-gray-700">Industry:</p>
+                      <p className="text-gray-600 line-clamp-1">{result.data.industry}</p>
                     </div>
                     <div>
-                      <p className="font-semibold text-gray-700 text-sm">Founded:</p>
-                      <p className="text-gray-600 text-sm">{result.data.founded}</p>
+                      <p className="font-semibold text-gray-700">Founded:</p>
+                      <p className="text-gray-600">{result.data.founded}</p>
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-700">Employees:</p>
+                      <p className="text-gray-600">{result.data.employees}</p>
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-700">Revenue:</p>
+                      <p className="text-gray-600">{result.data.revenue}</p>
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-700">Locations:</p>
+                      <p className="text-gray-600">{result.data.locations || '25'}</p>
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-700">Website:</p>
+                      <p className="text-gray-600 line-clamp-1">{result.data.website}</p>
                     </div>
                   </div>
-                  <div className="space-y-3">
-                    <div>
-                      <p className="font-semibold text-gray-700 text-sm">Employees:</p>
-                      <p className="text-gray-600 text-sm">{result.data.employees}</p>
-                    </div>
-                    <div>
-                      <p className="font-semibold text-gray-700 text-sm">Revenue:</p>
-                      <p className="text-gray-600 text-sm">{result.data.revenue}</p>
-                    </div>
-                  </div>
-                  <div className="space-y-3">
-                    <div>
-                      <p className="font-semibold text-gray-700 text-sm">Headquarters:</p>
-                      <p className="text-gray-600 text-sm line-clamp-1">{result.data.headquarters}</p>
-                    </div>
-                    <div>
-                      <p className="font-semibold text-gray-700 text-sm">Website:</p>
-                      <p className="text-gray-600 text-sm line-clamp-1">{result.data.website}</p>
-                    </div>
+                  <div>
+                    <p className="font-semibold text-gray-700 text-sm">Headquarters:</p>
+                    <p className="text-gray-600 text-sm line-clamp-1">{result.data.headquarters}</p>
                   </div>
 
                   {result.pppData && (
