@@ -90,7 +90,7 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
               <div className="bg-gradient-to-br from-red-500 to-orange-500 p-2 rounded-lg">
                 <Gavel className="h-5 w-5 text-white flex-shrink-0" />
               </div>
-              <span className="line-clamp-2 text-red-800">Class Action Litigation</span>
+              <span className="line-clamp-2 text-red-800">Employment Litigation</span>
             </CardTitle>
             <Badge variant={result.data.status === 'Pending' ? 'destructive' : 'secondary'} className="w-fit bg-gradient-to-r from-red-500 to-orange-500 text-white">
               {result.data.status}
@@ -193,119 +193,119 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
         </Card>
       ))}
 
-      {/* Other Results in Grid Layout */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        {/* Company Profile Cards */}
-        {combinedProfileData.map((result) => (
-          <Card key={result.id} className="hover:shadow-xl transition-all duration-300 flex flex-col border-0 shadow-lg bg-gradient-to-br from-white to-gray-50/50 hover:scale-[1.02]">
-            <CardHeader className="pb-4 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-t-lg">
-              <CardTitle className="flex items-center space-x-2 text-lg">
-                <div className="bg-gradient-to-br from-blue-500 to-indigo-500 p-2 rounded-lg">
-                  <Building className="h-5 w-5 text-white flex-shrink-0" />
-                </div>
-                <span className="line-clamp-2 text-blue-800">Company Profile</span>
-              </CardTitle>
-              <CardDescription className="line-clamp-2 text-blue-700">{result.data.companyName}</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4 flex-grow">
-              <div className="grid grid-cols-2 gap-3 text-sm">
-                <div>
-                  <p className="font-semibold text-gray-700">Industry:</p>
-                  <p className="text-gray-600 line-clamp-1">{result.data.industry}</p>
-                </div>
-                <div>
-                  <p className="font-semibold text-gray-700">Founded:</p>
-                  <p className="text-gray-600">{result.data.founded}</p>
-                </div>
-                <div>
-                  <p className="font-semibold text-gray-700">Employees:</p>
-                  <p className="text-gray-600">{result.data.employees}</p>
-                </div>
-                <div>
-                  <p className="font-semibold text-gray-700">Revenue:</p>
-                  <p className="text-gray-600">{result.data.revenue}</p>
-                </div>
-                <div>
-                  <p className="font-semibold text-gray-700">Locations:</p>
-                  <p className="text-gray-600">{result.data.locations || '25'}</p>
-                </div>
-                <div>
-                  <p className="font-semibold text-gray-700">Website:</p>
-                  <p className="text-gray-600 line-clamp-1">{result.data.website}</p>
-                </div>
+      {/* Company Profile Cards - Full Width */}
+      {combinedProfileData.map((result) => (
+        <Card key={result.id} className="hover:shadow-xl transition-all duration-300 border-0 shadow-lg bg-gradient-to-br from-white to-gray-50/50 hover:scale-[1.01]">
+          <CardHeader className="pb-4 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-t-lg">
+            <CardTitle className="flex items-center space-x-2 text-lg">
+              <div className="bg-gradient-to-br from-blue-500 to-indigo-500 p-2 rounded-lg">
+                <Building className="h-5 w-5 text-white flex-shrink-0" />
+              </div>
+              <span className="line-clamp-2 text-blue-800">Company Profile</span>
+            </CardTitle>
+            <CardDescription className="line-clamp-2 text-blue-700">{result.data.companyName}</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3 text-sm">
+              <div>
+                <p className="font-semibold text-gray-700">Industry:</p>
+                <p className="text-gray-600 line-clamp-1">{result.data.industry}</p>
               </div>
               <div>
-                <p className="font-semibold text-gray-700 text-sm">Headquarters:</p>
-                <p className="text-gray-600 text-sm line-clamp-1">{result.data.headquarters}</p>
+                <p className="font-semibold text-gray-700">Founded:</p>
+                <p className="text-gray-600">{result.data.founded}</p>
               </div>
-
-              {/* Secretary of State Profile Link */}
-              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-3 rounded-lg">
-                <p className="font-semibold text-gray-700 text-sm mb-2">Secretary of State:</p>
-                <a
-                  href={`https://www.sos.state.ar.us/corps/search_all.php?corp-search=${encodeURIComponent(result.data.companyName)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center text-blue-600 hover:text-blue-800 text-sm hover:underline"
-                >
-                  View Business Profile
-                  <ExternalLink className="h-3 w-3 ml-1" />
-                </a>
+              <div>
+                <p className="font-semibold text-gray-700">Employees:</p>
+                <p className="text-gray-600">{result.data.employees}</p>
               </div>
+              <div>
+                <p className="font-semibold text-gray-700">Revenue:</p>
+                <p className="text-gray-600">{result.data.revenue}</p>
+              </div>
+              <div>
+                <p className="font-semibold text-gray-700">Locations:</p>
+                <p className="text-gray-600">{result.data.locations || '25'}</p>
+              </div>
+              <div>
+                <p className="font-semibold text-gray-700">Website:</p>
+                <p className="text-gray-600 line-clamp-1">{result.data.website}</p>
+              </div>
+            </div>
+            <div>
+              <p className="font-semibold text-gray-700 text-sm">Headquarters:</p>
+              <p className="text-gray-600 text-sm line-clamp-1">{result.data.headquarters}</p>
+            </div>
 
-              {result.pppData && (
-                <>
-                  <Separator className="bg-gradient-to-r from-blue-200 to-green-200" />
-                  <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-4 rounded-lg">
-                    <div className="flex items-center space-x-2 mb-3">
-                      <div className="bg-gradient-to-br from-green-500 to-emerald-500 p-1 rounded">
-                        <Users className="h-4 w-4 text-white" />
-                      </div>
-                      <h4 className="font-semibold text-green-800 text-sm">PPP Loan Information</h4>
-                      <Badge variant={result.pppData.forgiven ? 'default' : 'secondary'} className={`text-xs ${result.pppData.forgiven ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white' : ''}`}>
-                        {result.pppData.forgiven ? 'Forgiven' : 'Not Forgiven'}
-                      </Badge>
+            {/* Secretary of State Profile Link */}
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-3 rounded-lg">
+              <p className="font-semibold text-gray-700 text-sm mb-2">Secretary of State:</p>
+              <a
+                href={`https://www.sos.state.ar.us/corps/search_all.php?corp-search=${encodeURIComponent(result.data.companyName)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center text-blue-600 hover:text-blue-800 text-sm hover:underline"
+              >
+                View Business Profile
+                <ExternalLink className="h-3 w-3 ml-1" />
+              </a>
+            </div>
+
+            {result.pppData && (
+              <>
+                <Separator className="bg-gradient-to-r from-blue-200 to-green-200" />
+                <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-4 rounded-lg">
+                  <div className="flex items-center space-x-2 mb-3">
+                    <div className="bg-gradient-to-br from-green-500 to-emerald-500 p-1 rounded">
+                      <Users className="h-4 w-4 text-white" />
                     </div>
-                    <div className="grid grid-cols-2 gap-3 text-xs">
-                      <div>
-                        <p className="font-semibold text-gray-700">Loan Amount:</p>
-                        <p className="text-gray-600 flex items-center">
-                          <DollarSign className="h-3 w-3 mr-1 text-green-500" />
-                          {result.pppData.loanAmount}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="font-semibold text-gray-700">Jobs Reported:</p>
-                        <p className="text-gray-600">{result.pppData.jobsReported}</p>
-                      </div>
-                      <div>
-                        <p className="font-semibold text-gray-700">Approval Date:</p>
-                        <p className="text-gray-600 flex items-center">
-                          <Calendar className="h-3 w-3 mr-1 text-green-500" />
-                          {result.pppData.approvalDate}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="font-semibold text-gray-700">Lender:</p>
-                        <p className="text-gray-600 line-clamp-1">{result.pppData.lender}</p>
-                      </div>
-                      {result.pppData.forgiven && (
-                        <div className="col-span-2">
-                          <p className="font-semibold text-gray-700">Forgiveness Date:</p>
-                          <p className="text-gray-600 flex items-center">
-                            <CheckCircle className="h-3 w-3 mr-1 text-green-600" />
-                            {result.pppData.forgivenessDate}
-                          </p>
-                        </div>
-                      )}
-                    </div>
+                    <h4 className="font-semibold text-green-800 text-sm">PPP Loan Information</h4>
+                    <Badge variant={result.pppData.forgiven ? 'default' : 'secondary'} className={`text-xs ${result.pppData.forgiven ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white' : ''}`}>
+                      {result.pppData.forgiven ? 'Forgiven' : 'Not Forgiven'}
+                    </Badge>
                   </div>
-                </>
-              )}
-            </CardContent>
-          </Card>
-        ))}
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+                    <div>
+                      <p className="font-semibold text-gray-700">Loan Amount:</p>
+                      <p className="text-gray-600 flex items-center">
+                        <DollarSign className="h-3 w-3 mr-1 text-green-500" />
+                        {result.pppData.loanAmount}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-700">Jobs Reported:</p>
+                      <p className="text-gray-600">{result.pppData.jobsReported}</p>
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-700">Approval Date:</p>
+                      <p className="text-gray-600 flex items-center">
+                        <Calendar className="h-3 w-3 mr-1 text-green-500" />
+                        {result.pppData.approvalDate}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-700">Lender:</p>
+                      <p className="text-gray-600 line-clamp-1">{result.pppData.lender}</p>
+                    </div>
+                    {result.pppData.forgiven && (
+                      <div className="col-span-2">
+                        <p className="font-semibold text-gray-700">Forgiveness Date:</p>
+                        <p className="text-gray-600 flex items-center">
+                          <CheckCircle className="h-3 w-3 mr-1 text-green-600" />
+                          {result.pppData.forgivenessDate}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </>
+            )}
+          </CardContent>
+        </Card>
+      ))}
 
+      {/* Other Results in Grid Layout */}
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
         {/* PAGA Results */}
         {pagaResults.map((result) => (
           <Card key={result.id} className="hover:shadow-xl transition-all duration-300 flex flex-col border-0 shadow-lg bg-gradient-to-br from-white to-gray-50/50 hover:scale-[1.02]">
