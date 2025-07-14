@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -196,17 +197,19 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
       {/* Company Profile Cards - Full Width */}
       {combinedProfileData.map((result) => (
         <Card key={result.id} className="hover:shadow-xl transition-all duration-300 border-0 shadow-lg bg-gradient-to-br from-white to-gray-50/50 hover:scale-[1.01]">
-          <CardHeader className="pb-4 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-t-lg">
-            <CardTitle className="flex items-center space-x-2 text-lg">
+          <CardHeader className="pb-3 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-t-lg">
+            <div className="flex items-center space-x-3">
               <div className="bg-gradient-to-br from-blue-500 to-indigo-500 p-2 rounded-lg">
                 <Building className="h-5 w-5 text-white flex-shrink-0" />
               </div>
-              <span className="line-clamp-2 text-blue-800">Company Profile</span>
-            </CardTitle>
-            <CardDescription className="line-clamp-2 text-blue-700">{result.data.companyName}</CardDescription>
+              <div>
+                <h2 className="text-xl font-bold text-blue-900">{result.data.companyName}</h2>
+                <p className="text-sm text-blue-700">Company Profile</p>
+              </div>
+            </div>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3 text-sm">
+          <CardContent className="space-y-3 py-4">
+            <div className="grid grid-cols-3 md:grid-cols-6 gap-3 text-xs">
               <div>
                 <p className="font-semibold text-gray-700">Industry:</p>
                 <p className="text-gray-600 line-clamp-1">{result.data.industry}</p>
@@ -232,30 +235,31 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
                 <p className="text-gray-600 line-clamp-1">{result.data.website}</p>
               </div>
             </div>
-            <div>
-              <p className="font-semibold text-gray-700 text-sm">Headquarters:</p>
-              <p className="text-gray-600 text-sm line-clamp-1">{result.data.headquarters}</p>
-            </div>
-
-            {/* Secretary of State Profile Link */}
-            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-3 rounded-lg">
-              <p className="font-semibold text-gray-700 text-sm mb-2">Secretary of State:</p>
-              <a
-                href={`https://www.sos.state.ar.us/corps/search_all.php?corp-search=${encodeURIComponent(result.data.companyName)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center text-blue-600 hover:text-blue-800 text-sm hover:underline"
-              >
-                View Business Profile
-                <ExternalLink className="h-3 w-3 ml-1" />
-              </a>
+            
+            <div className="flex flex-wrap gap-4 text-xs">
+              <div>
+                <p className="font-semibold text-gray-700">Headquarters:</p>
+                <p className="text-gray-600">{result.data.headquarters}</p>
+              </div>
+              <div>
+                <p className="font-semibold text-gray-700">Secretary of State:</p>
+                <a
+                  href={`https://www.sos.state.ar.us/corps/search_all.php?corp-search=${encodeURIComponent(result.data.companyName)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center text-blue-600 hover:text-blue-800 hover:underline"
+                >
+                  View Business Profile
+                  <ExternalLink className="h-3 w-3 ml-1" />
+                </a>
+              </div>
             </div>
 
             {result.pppData && (
               <>
                 <Separator className="bg-gradient-to-r from-blue-200 to-green-200" />
-                <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-4 rounded-lg">
-                  <div className="flex items-center space-x-2 mb-3">
+                <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-3 rounded-lg">
+                  <div className="flex items-center space-x-2 mb-2">
                     <div className="bg-gradient-to-br from-green-500 to-emerald-500 p-1 rounded">
                       <Users className="h-4 w-4 text-white" />
                     </div>
