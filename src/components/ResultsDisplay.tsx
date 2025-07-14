@@ -13,7 +13,7 @@ interface ResultsDisplayProps {
 export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
   if (isLoading) {
     return (
-      <div className="space-y-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
         {[1, 2, 3].map((i) => (
           <Card key={i} className="animate-pulse">
             <CardHeader>
@@ -51,49 +51,49 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
         <Badge variant="secondary">{results.length} results found</Badge>
       </div>
 
-      <div className="space-y-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
         {results.map((result) => (
-          <Card key={result.id} className="hover:shadow-md transition-shadow">
+          <Card key={result.id} className="hover:shadow-md transition-shadow h-fit">
             {result.type === 'litigation' && (
               <>
                 <CardHeader>
-                  <CardTitle className="flex items-center space-x-2">
+                  <CardTitle className="flex items-center space-x-2 text-lg">
                     <FileText className="h-5 w-5 text-red-600" />
                     <span>Class Action Litigation</span>
-                    <Badge variant={result.data.status === 'Pending' ? 'destructive' : 'secondary'}>
-                      {result.data.status}
-                    </Badge>
                   </CardTitle>
+                  <Badge variant={result.data.status === 'Pending' ? 'destructive' : 'secondary'} className="w-fit">
+                    {result.data.status}
+                  </Badge>
                   <CardDescription>{result.data.caseTitle}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-3">
                     <div>
-                      <p className="font-semibold text-gray-700">Court:</p>
-                      <p className="text-gray-600">{result.data.court}</p>
+                      <p className="font-semibold text-gray-700 text-sm">Court:</p>
+                      <p className="text-gray-600 text-sm">{result.data.court}</p>
                     </div>
                     <div>
-                      <p className="font-semibold text-gray-700">Filing Date:</p>
-                      <p className="text-gray-600 flex items-center">
-                        <Calendar className="h-4 w-4 mr-1" />
+                      <p className="font-semibold text-gray-700 text-sm">Filing Date:</p>
+                      <p className="text-gray-600 text-sm flex items-center">
+                        <Calendar className="h-3 w-3 mr-1" />
                         {result.data.filingDate}
                       </p>
                     </div>
                   </div>
                   <Separator />
                   <div>
-                    <p className="font-semibold text-gray-700 mb-2">Allegations:</p>
-                    <p className="text-gray-600">{result.data.allegations}</p>
+                    <p className="font-semibold text-gray-700 mb-2 text-sm">Allegations:</p>
+                    <p className="text-gray-600 text-sm">{result.data.allegations}</p>
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-3">
                     <div>
-                      <p className="font-semibold text-gray-700">Lead Plaintiff:</p>
-                      <p className="text-gray-600">{result.data.leadPlaintiff}</p>
+                      <p className="font-semibold text-gray-700 text-sm">Lead Plaintiff:</p>
+                      <p className="text-gray-600 text-sm">{result.data.leadPlaintiff}</p>
                     </div>
                     <div>
-                      <p className="font-semibold text-gray-700">Estimated Damages:</p>
-                      <p className="text-gray-600 flex items-center">
-                        <DollarSign className="h-4 w-4 mr-1" />
+                      <p className="font-semibold text-gray-700 text-sm">Estimated Damages:</p>
+                      <p className="text-gray-600 text-sm flex items-center">
+                        <DollarSign className="h-3 w-3 mr-1" />
                         {result.data.estimatedDamages}
                       </p>
                     </div>
@@ -105,47 +105,47 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
             {result.type === 'ppp' && (
               <>
                 <CardHeader>
-                  <CardTitle className="flex items-center space-x-2">
+                  <CardTitle className="flex items-center space-x-2 text-lg">
                     <Building className="h-5 w-5 text-green-600" />
                     <span>PPP Loan Record</span>
-                    <Badge variant={result.data.forgiven ? 'default' : 'secondary'}>
-                      {result.data.forgiven ? 'Forgiven' : 'Not Forgiven'}
-                    </Badge>
                   </CardTitle>
+                  <Badge variant={result.data.forgiven ? 'default' : 'secondary'} className="w-fit">
+                    {result.data.forgiven ? 'Forgiven' : 'Not Forgiven'}
+                  </Badge>
                   <CardDescription>{result.data.businessName}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="space-y-3">
                     <div>
-                      <p className="font-semibold text-gray-700">Loan Amount:</p>
-                      <p className="text-gray-600 flex items-center">
-                        <DollarSign className="h-4 w-4 mr-1" />
+                      <p className="font-semibold text-gray-700 text-sm">Loan Amount:</p>
+                      <p className="text-gray-600 text-sm flex items-center">
+                        <DollarSign className="h-3 w-3 mr-1" />
                         {result.data.loanAmount}
                       </p>
                     </div>
                     <div>
-                      <p className="font-semibold text-gray-700">Approval Date:</p>
-                      <p className="text-gray-600 flex items-center">
-                        <Calendar className="h-4 w-4 mr-1" />
+                      <p className="font-semibold text-gray-700 text-sm">Approval Date:</p>
+                      <p className="text-gray-600 text-sm flex items-center">
+                        <Calendar className="h-3 w-3 mr-1" />
                         {result.data.approvalDate}
                       </p>
                     </div>
                     <div>
-                      <p className="font-semibold text-gray-700">Jobs Reported:</p>
-                      <p className="text-gray-600">{result.data.jobsReported}</p>
+                      <p className="font-semibold text-gray-700 text-sm">Jobs Reported:</p>
+                      <p className="text-gray-600 text-sm">{result.data.jobsReported}</p>
                     </div>
                   </div>
                   <Separator />
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-3">
                     <div>
-                      <p className="font-semibold text-gray-700">Lender:</p>
-                      <p className="text-gray-600">{result.data.lender}</p>
+                      <p className="font-semibold text-gray-700 text-sm">Lender:</p>
+                      <p className="text-gray-600 text-sm">{result.data.lender}</p>
                     </div>
                     {result.data.forgiven && (
                       <div>
-                        <p className="font-semibold text-gray-700">Forgiveness Date:</p>
-                        <p className="text-gray-600 flex items-center">
-                          <CheckCircle className="h-4 w-4 mr-1 text-green-600" />
+                        <p className="font-semibold text-gray-700 text-sm">Forgiveness Date:</p>
+                        <p className="text-gray-600 text-sm flex items-center">
+                          <CheckCircle className="h-3 w-3 mr-1 text-green-600" />
                           {result.data.forgivenessDate}
                         </p>
                       </div>
@@ -158,42 +158,42 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
             {result.type === 'profile' && (
               <>
                 <CardHeader>
-                  <CardTitle className="flex items-center space-x-2">
+                  <CardTitle className="flex items-center space-x-2 text-lg">
                     <Users className="h-5 w-5 text-blue-600" />
                     <span>Company Profile</span>
                   </CardTitle>
                   <CardDescription>{result.data.companyName}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-3">
                     <div>
-                      <p className="font-semibold text-gray-700">Industry:</p>
-                      <p className="text-gray-600">{result.data.industry}</p>
+                      <p className="font-semibold text-gray-700 text-sm">Industry:</p>
+                      <p className="text-gray-600 text-sm">{result.data.industry}</p>
                     </div>
                     <div>
-                      <p className="font-semibold text-gray-700">Founded:</p>
-                      <p className="text-gray-600">{result.data.founded}</p>
+                      <p className="font-semibold text-gray-700 text-sm">Founded:</p>
+                      <p className="text-gray-600 text-sm">{result.data.founded}</p>
                     </div>
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-3">
                     <div>
-                      <p className="font-semibold text-gray-700">Employees:</p>
-                      <p className="text-gray-600">{result.data.employees}</p>
+                      <p className="font-semibold text-gray-700 text-sm">Employees:</p>
+                      <p className="text-gray-600 text-sm">{result.data.employees}</p>
                     </div>
                     <div>
-                      <p className="font-semibold text-gray-700">Revenue:</p>
-                      <p className="text-gray-600">{result.data.revenue}</p>
+                      <p className="font-semibold text-gray-700 text-sm">Revenue:</p>
+                      <p className="text-gray-600 text-sm">{result.data.revenue}</p>
                     </div>
                   </div>
                   <Separator />
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-3">
                     <div>
-                      <p className="font-semibold text-gray-700">Headquarters:</p>
-                      <p className="text-gray-600">{result.data.headquarters}</p>
+                      <p className="font-semibold text-gray-700 text-sm">Headquarters:</p>
+                      <p className="text-gray-600 text-sm">{result.data.headquarters}</p>
                     </div>
                     <div>
-                      <p className="font-semibold text-gray-700">Website:</p>
-                      <p className="text-gray-600">{result.data.website}</p>
+                      <p className="font-semibold text-gray-700 text-sm">Website:</p>
+                      <p className="text-gray-600 text-sm">{result.data.website}</p>
                     </div>
                   </div>
                 </CardContent>
