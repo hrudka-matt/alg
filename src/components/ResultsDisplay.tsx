@@ -51,7 +51,7 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
     return (
       <Card className="bg-gradient-to-br from-white to-blue-50 border-blue-200">
         <CardContent className="text-center py-12">
-          <div className="bg-gradient-to-br from-blue-100 to-purple-100 p-4 rounded-full w-fit mx-auto mb-4">
+          <div className="bg-gradient-to-br from-blue-100 to-secondary p-4 rounded-full w-fit mx-auto mb-4">
             <FileText className="h-12 w-12 text-blue-600" />
           </div>
           <h3 className="text-lg font-medium text-gray-900 mb-2">No Results Yet</h3>
@@ -77,7 +77,7 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">Search Results</h2>
-        <Badge variant="secondary" className="bg-gradient-to-r from-blue-100 to-purple-100 text-blue-800 border-blue-200">
+        <Badge variant="secondary" className="bg-gradient-to-r from-blue-100 to-secondary text-blue-800 border-blue-200">
           {results.length} results found
         </Badge>
       </div>
@@ -85,14 +85,14 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
       {/* Company Profile Cards - Full Width */}
       {combinedProfileData.map((result) => (
         <Card key={result.id} className="hover:shadow-xl transition-all duration-300 border-0 shadow-lg bg-gradient-to-br from-white to-gray-50/50 hover:scale-[1.01]">
-          <CardHeader className="pb-2 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-t-lg">
+          <CardHeader className="pb-2 bg-gradient-to-br from-blue-50 to-secondary rounded-t-lg">
             <div className="flex items-center space-x-3">
-              <div className="bg-gradient-to-br from-blue-500 to-indigo-500 p-2 rounded-lg">
-                <Building className="h-5 w-5 text-white flex-shrink-0" />
+              <div className="bg-gradient-to-br from-primary to-blue-600 p-2 rounded-lg">
+                <Building className="h-5 w-5 text-primary-foreground flex-shrink-0" />
               </div>
               <div>
-                <h2 className="text-lg font-bold text-blue-900">{result.data.companyName}</h2>
-                <p className="text-xs text-blue-700">Company Profile</p>
+                <h2 className="text-lg font-bold text-primary">{result.data.companyName}</h2>
+                <p className="text-xs text-muted-foreground">Company Profile</p>
               </div>
             </div>
           </CardHeader>
@@ -199,17 +199,17 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
       {/* PAGA Filings Results - Full Width Table */}
       {pagaResults.length > 0 && (
         <Card className="hover:shadow-xl transition-all duration-300 border-0 shadow-lg bg-gradient-to-br from-white to-gray-50/50">
-          <CardHeader className="pb-4 bg-gradient-to-br from-purple-50 to-violet-50 rounded-t-lg">
+          <CardHeader className="pb-4 bg-gradient-to-br from-secondary to-muted rounded-t-lg">
             <CardTitle className="flex items-center space-x-2 text-lg">
-              <div className="bg-gradient-to-br from-purple-500 to-violet-500 p-2 rounded-lg">
-                <Scale className="h-5 w-5 text-white flex-shrink-0" />
+              <div className="bg-gradient-to-br from-primary to-blue-600 p-2 rounded-lg">
+                <Scale className="h-5 w-5 text-primary-foreground flex-shrink-0" />
               </div>
-              <span className="line-clamp-2 text-purple-800">PAGA Filings</span>
+              <span className="line-clamp-2 text-foreground">PAGA Filings</span>
             </CardTitle>
-            <Badge variant="secondary" className="w-fit bg-gradient-to-r from-purple-500 to-violet-500 text-white">
+            <Badge variant="secondary" className="w-fit bg-primary text-primary-foreground">
               {pagaResults.length} filing{pagaResults.length !== 1 ? 's' : ''} found
             </Badge>
-            <CardDescription className="line-clamp-2 text-purple-700">Private Attorneys General Act filings</CardDescription>
+            <CardDescription className="line-clamp-2 text-muted-foreground">Private Attorneys General Act filings</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="overflow-x-auto">
@@ -227,7 +227,7 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
                   {pagaResults.map((result, index) => (
                     <TableRow key={index}>
                       <TableCell className="text-xs p-2">
-                        <span className="font-mono text-purple-600">
+                        <span className="font-mono text-primary">
                           {result.data.caseNumber}
                         </span>
                       </TableCell>
