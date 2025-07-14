@@ -3,7 +3,7 @@ import { Scale, Search, FileText } from "lucide-react";
 
 export const Header = () => {
   return (
-    <header className="bg-primary shadow-lg border-b">
+    <header className="bg-primary shadow-lg border-b border-border">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">

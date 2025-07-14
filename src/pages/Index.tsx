@@ -3,6 +3,7 @@ import { useState } from "react";
 import { SearchForm } from "@/components/SearchForm";
 import { ResultsDisplay } from "@/components/ResultsDisplay";
 import { Header } from "@/components/Header";
+import { ApiStatusIndicators } from "@/components/ApiStatusIndicators";
 import { useToast } from "@/hooks/use-toast";
 
 export interface SearchResult {
@@ -15,6 +16,14 @@ const Index = () => {
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+
+  // API connection status - currently using dummy data
+  const apiStatus = {
+    litigation: { connected: false, name: "Trellis Litigation" },
+    ppp: { connected: false, name: "PPP Database" },
+    profile: { connected: false, name: "People Data Labs" },
+    paga: { connected: false, name: "PAGA Filings" }
+  };
 
   const generateDummyData = (query: string, searchSources: any): SearchResult[] => {
     const results: SearchResult[] = [];
@@ -107,12 +116,9 @@ const Index = () => {
         data: {
           businessName: query,
           filingDate: "2023-09-15",
-          court: "Superior Court of California, Los Angeles County",
           caseNumber: "BC712345",
           coas: "Failure to provide meal and rest breaks, unpaid overtime wages, wage statement violations",
-          status: "Active",
           plaintiffAttorney: "Smith & Associates",
-          estimatedPenalties: "$280,000",
           affectedEmployees: 150
         }
       });
@@ -153,21 +159,22 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-background via-muted to-accent/10">
       <Header />
       
       <main className="container mx-auto px-4 py-8">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent mb-4">
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-primary via-primary/80 to-accent bg-clip-text text-transparent mb-4">
               Legal & Financial Research Platform
             </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               Comprehensive company research across litigation, PPP loans, and financial profiles
             </p>
           </div>
 
           <div className="space-y-8">
+            <ApiStatusIndicators apiStatus={apiStatus} />
             <SearchForm onSearch={handleSearch} isLoading={isLoading} />
             <ResultsDisplay results={searchResults} isLoading={isLoading} />
           </div>
