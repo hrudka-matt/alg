@@ -72,13 +72,13 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50">
       <Header />
       
       <main className="container mx-auto px-4 py-8">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent mb-4">
               Legal & Financial Research Platform
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -87,9 +87,19 @@ const Index = () => {
           </div>
 
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-8">
-              <TabsTrigger value="search">Search & Research</TabsTrigger>
-              <TabsTrigger value="results">Results & Analysis</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-2 mb-8 bg-white/80 backdrop-blur-sm">
+              <TabsTrigger 
+                value="search" 
+                className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-purple-500 data-[state=active]:text-white"
+              >
+                Search & Research
+              </TabsTrigger>
+              <TabsTrigger 
+                value="results"
+                className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-indigo-500 data-[state=active]:text-white"
+              >
+                Results & Analysis
+              </TabsTrigger>
             </TabsList>
             
             <TabsContent value="search" className="space-y-6">
