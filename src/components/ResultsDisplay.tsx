@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { FileText, Building, Users, Calendar, DollarSign, AlertTriangle, CheckCircle } from "lucide-react";
+import { FileText, Building, Users, Calendar, DollarSign, AlertTriangle, CheckCircle, Scale, Gavel } from "lucide-react";
 import { SearchResult } from "@/pages/Index";
 
 interface ResultsDisplayProps {
@@ -203,6 +203,64 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
                     <div>
                       <p className="font-semibold text-gray-700 text-sm">Website:</p>
                       <p className="text-gray-600 text-sm line-clamp-1">{result.data.website}</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </>
+            )}
+
+            {result.type === 'paga' && (
+              <>
+                <CardHeader className="pb-4 bg-gradient-to-br from-purple-50 to-violet-50 rounded-t-lg">
+                  <CardTitle className="flex items-center space-x-2 text-lg">
+                    <div className="bg-gradient-to-br from-purple-500 to-violet-500 p-2 rounded-lg">
+                      <Scale className="h-5 w-5 text-white flex-shrink-0" />
+                    </div>
+                    <span className="line-clamp-2 text-purple-800">PAGA Filing</span>
+                  </CardTitle>
+                  <Badge variant={result.data.status === 'Active' ? 'destructive' : 'secondary'} className="w-fit bg-gradient-to-r from-purple-500 to-violet-500 text-white">
+                    {result.data.status}
+                  </Badge>
+                  <CardDescription className="line-clamp-2 text-purple-700">{result.data.businessName}</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4 flex-grow">
+                  <div className="space-y-3">
+                    <div>
+                      <p className="font-semibold text-gray-700 text-sm">Case Number:</p>
+                      <p className="text-gray-600 text-sm">{result.data.caseNumber}</p>
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-700 text-sm">Court:</p>
+                      <p className="text-gray-600 text-sm line-clamp-2">{result.data.court}</p>
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-700 text-sm">Filing Date:</p>
+                      <p className="text-gray-600 text-sm flex items-center">
+                        <Calendar className="h-3 w-3 mr-1 flex-shrink-0 text-purple-500" />
+                        {result.data.filingDate}
+                      </p>
+                    </div>
+                  </div>
+                  <Separator className="bg-gradient-to-r from-purple-200 to-violet-200" />
+                  <div>
+                    <p className="font-semibold text-gray-700 mb-2 text-sm">Allegations:</p>
+                    <p className="text-gray-600 text-sm line-clamp-3">{result.data.allegations}</p>
+                  </div>
+                  <div className="space-y-3">
+                    <div>
+                      <p className="font-semibold text-gray-700 text-sm">Plaintiff Attorney:</p>
+                      <p className="text-gray-600 text-sm line-clamp-1">{result.data.plaintiffAttorney}</p>
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-700 text-sm">Estimated Penalties:</p>
+                      <p className="text-gray-600 text-sm flex items-center">
+                        <DollarSign className="h-3 w-3 mr-1 flex-shrink-0 text-purple-500" />
+                        {result.data.estimatedPenalties}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-700 text-sm">Affected Employees:</p>
+                      <p className="text-gray-600 text-sm">{result.data.affectedEmployees}</p>
                     </div>
                   </div>
                 </CardContent>

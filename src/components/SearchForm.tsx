@@ -1,10 +1,11 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-import { CalendarIcon, Search, Building, FileText, Users } from "lucide-react";
+import { CalendarIcon, Search, Building, FileText, Users, Scale } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { format } from "date-fns";
@@ -22,7 +23,8 @@ export const SearchForm = ({ onSearch, isLoading }: SearchFormProps) => {
   const [searchSources, setSearchSources] = useState({
     litigation: true,
     ppp: true,
-    profile: true
+    profile: true,
+    paga: true
   });
 
   // Set default date range to last 5 years
@@ -49,7 +51,7 @@ export const SearchForm = ({ onSearch, isLoading }: SearchFormProps) => {
           <span>Company Research</span>
         </CardTitle>
         <CardDescription>
-          Search across litigation records, PPP loans, and company profiles
+          Search across litigation records, PPP loans, PAGA filings, and company profiles
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -123,7 +125,7 @@ export const SearchForm = ({ onSearch, isLoading }: SearchFormProps) => {
 
           <div className="space-y-4">
             <Label>Data Sources</Label>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="flex items-center space-x-2">
                 <Checkbox
                   id="litigation"
@@ -163,6 +165,20 @@ export const SearchForm = ({ onSearch, isLoading }: SearchFormProps) => {
                 <Label htmlFor="profile" className="flex items-center space-x-2">
                   <Users className="h-4 w-4" />
                   <span>People Data Labs</span>
+                </Label>
+              </div>
+
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="paga"
+                  checked={searchSources.paga}
+                  onCheckedChange={(checked) =>
+                    setSearchSources(prev => ({ ...prev, paga: checked as boolean }))
+                  }
+                />
+                <Label htmlFor="paga" className="flex items-center space-x-2">
+                  <Scale className="h-4 w-4" />
+                  <span>PAGA Filings</span>
                 </Label>
               </div>
             </div>

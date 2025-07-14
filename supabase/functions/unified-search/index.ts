@@ -1,4 +1,3 @@
-
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 
 const corsHeaders = {
@@ -124,6 +123,25 @@ serve(async (req) => {
           jobsReported: 25,
           forgiven: true,
           forgivenessDate: "2021-08-22"
+        }
+      })
+    }
+
+    // Mock PAGA data (replace with actual PAGA API when available)
+    if (searchSources.paga) {
+      results.push({
+        id: `paga-${Date.now()}`,
+        type: 'paga',
+        data: {
+          businessName: query,
+          filingDate: "2023-09-15",
+          court: "Superior Court of California, Los Angeles County",
+          caseNumber: "BC712345",
+          allegations: "Failure to provide meal and rest breaks, unpaid overtime wages",
+          status: "Active",
+          plaintiffAttorney: "Smith & Associates",
+          estimatedPenalties: "$280,000",
+          affectedEmployees: 150
         }
       })
     }

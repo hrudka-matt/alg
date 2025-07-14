@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { SearchForm } from "@/components/SearchForm";
 import { ResultsDisplay } from "@/components/ResultsDisplay";
@@ -7,7 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 
 export interface SearchResult {
   id: string;
-  type: 'litigation' | 'ppp' | 'profile';
+  type: 'litigation' | 'ppp' | 'profile' | 'paga';
   data: any;
 }
 
