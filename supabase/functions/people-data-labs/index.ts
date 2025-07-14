@@ -36,7 +36,7 @@ serve(async (req) => {
       )
     }
 
-    // Search for company using People Data Labs Company API
+    // Updated query structure based on PDL documentation
     const response = await fetch('https://api.peopledatalabs.com/v5/company/search', {
       method: 'POST',
       headers: {
@@ -46,23 +46,31 @@ serve(async (req) => {
       body: JSON.stringify({
         query: {
           bool: {
-            must: [
+            should: [
               {
                 term: {
                   name: companyName
+                }
+              },
+              {
+                wildcard: {
+                  name: `*${companyName}*`
                 }
               }
             ]
           }
         },
-        size: 1
+        size: 5,
+        dataset: "company"
       })
     })
 
     if (!response.ok) {
       console.error('People Data Labs API error:', response.status, response.statusText)
+      const errorText = await response.text()
+      console.error('Error details:', errorText)
       return new Response(
-        JSON.stringify({ error: 'Failed to fetch company data' }),
+        JSON.stringify({ error: 'Failed to fetch company data', details: errorText }),
         { 
           status: response.status, 
           headers: { ...corsHeaders, 'Content-Type': 'application/json' }
@@ -71,6 +79,7 @@ serve(async (req) => {
     }
 
     const data = await response.json()
+    console.log('PDL API Response:', JSON.stringify(data, null, 2))
     
     return new Response(
       JSON.stringify(data),
@@ -82,7 +91,7 @@ serve(async (req) => {
   } catch (error) {
     console.error('Error in people-data-labs function:', error)
     return new Response(
-      JSON.stringify({ error: 'Internal server error' }),
+      JSON.stringify({ error: 'Internal server error', details: error.message }),
       { 
         status: 500, 
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }

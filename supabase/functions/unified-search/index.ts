@@ -35,23 +35,59 @@ serve(async (req) => {
 
         if (pdlResponse.ok) {
           const pdlData = await pdlResponse.json()
+          console.log('PDL Response in unified-search:', pdlData)
           
           if (pdlData.data && pdlData.data.length > 0) {
             const company = pdlData.data[0]
+            
+            // Format employee count
+            let employeeCount = 'Unknown'
+            if (company.employee_count) {
+              employeeCount = company.employee_count.toString()
+            } else if (company.employee_count_range) {
+              employeeCount = company.employee_count_range
+            }
+            
+            // Format revenue
+            let revenue = 'Unknown'
+            if (company.estimated_num_employees && company.estimated_num_employees > 0) {
+              // Rough estimate: $100k revenue per employee
+              const estimatedRevenue = Math.round(company.estimated_num_employees * 100000 / 1000000)
+              revenue = `~$${estimatedRevenue}M (estimated)`
+            } else if (company.annual_revenue) {
+              revenue = `$${(company.annual_revenue / 1000000).toFixed(1)}M`
+            }
+            
+            // Format location
+            let headquarters = 'Unknown'
+            if (company.location) {
+              if (company.location.locality && company.location.region) {
+                headquarters = `${company.location.locality}, ${company.location.region}`
+              } else if (company.location.country) {
+                headquarters = company.location.country
+              }
+            }
+            
             results.push({
               id: `profile-${Date.now()}`,
               type: 'profile',
               data: {
                 companyName: company.name || query,
-                industry: company.industry || 'Unknown',
-                employees: company.employee_count ? `${company.employee_count}` : 'Unknown',
-                revenue: company.estimated_num_employees ? `$${Math.round(company.estimated_num_employees * 100000 / 1000000)}M` : 'Unknown',
-                founded: company.founded || 'Unknown',
-                headquarters: company.location ? `${company.location.locality}, ${company.location.region}` : 'Unknown',
-                website: company.website || 'Unknown'
+                industry: company.industry || company.industries?.[0] || 'Unknown',
+                employees: employeeCount,
+                revenue: revenue,
+                founded: company.founded ? company.founded.toString() : 'Unknown',
+                headquarters: headquarters,
+                website: company.website || 'Unknown',
+                description: company.summary || 'No description available'
               }
             })
+          } else {
+            console.log('No company data found in PDL response')
           }
+        } else {
+          const errorText = await pdlResponse.text()
+          console.error('PDL API error:', pdlResponse.status, errorText)
         }
       } catch (error) {
         console.error('Error fetching People Data Labs data:', error)
