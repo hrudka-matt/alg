@@ -16,6 +16,7 @@ interface CaseDetailsModalProps {
     dateFiled: string;
     dateSettled?: string;
     coas: string;
+    category?: string;
   };
 }
 
@@ -112,7 +113,7 @@ export const CaseDetailsModal = ({ isOpen, onClose, caseData }: CaseDetailsModal
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+      <DialogContent className="max-w-6xl max-h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center space-x-2 text-xl">
             <div className="bg-gradient-to-br from-red-500 to-orange-500 p-2 rounded-lg">
@@ -126,7 +127,7 @@ export const CaseDetailsModal = ({ isOpen, onClose, caseData }: CaseDetailsModal
           {/* Case Summary */}
           <div className="bg-gradient-to-br from-red-50 to-orange-50 p-4 rounded-lg">
             <h3 className="font-semibold text-red-800 mb-3">Case Summary</h3>
-            <div className="grid grid-cols-2 gap-4 text-sm">
+            <div className="grid grid-cols-3 gap-4 text-sm">
               <div>
                 <p className="font-semibold text-gray-700">Jurisdiction:</p>
                 <p className="text-gray-600">{caseData.jurisdiction}</p>
@@ -134,6 +135,10 @@ export const CaseDetailsModal = ({ isOpen, onClose, caseData }: CaseDetailsModal
               <div>
                 <p className="font-semibold text-gray-700">Lead Counsel:</p>
                 <p className="text-gray-600">{caseData.lawFirm}</p>
+              </div>
+              <div>
+                <p className="font-semibold text-gray-700">Category:</p>
+                <p className="text-gray-600">{caseData.category || 'Securities'}</p>
               </div>
               <div>
                 <p className="font-semibold text-gray-700">Date Filed:</p>

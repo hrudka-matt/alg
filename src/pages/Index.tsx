@@ -35,6 +35,7 @@ const Index = () => {
               caseNumber: "1:23-cv-02156",
               jurisdiction: "S.D.N.Y.",
               lawFirm: "Robbins Geller",
+              category: "Securities",
               dateFiled: "03/15/23",
               dateSettled: null,
               coas: "Securities fraud, misleading statements"
@@ -43,6 +44,7 @@ const Index = () => {
               caseNumber: "2:23-cv-03421",
               jurisdiction: "C.D. Cal.",
               lawFirm: "Bernstein Litowitz",
+              category: "Consumer Protection",
               dateFiled: "05/22/23",
               dateSettled: null,
               coas: "Failure to disclose material information"
@@ -51,6 +53,7 @@ const Index = () => {
               caseNumber: "3:23-cv-04789",
               jurisdiction: "N.D. Ill.",
               lawFirm: "Kessler Topaz",
+              category: "Data Privacy",
               dateFiled: "08/10/23",
               dateSettled: "12/15/23",
               coas: "Breach of fiduciary duty, unjust enrichment"
