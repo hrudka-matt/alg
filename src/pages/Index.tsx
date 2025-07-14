@@ -23,10 +23,15 @@ const Index = () => {
     try {
       console.log('Starting search for:', query);
       
-      const response = await fetch('/functions/v1/unified-search', {
+      // Use the Supabase project URL for Edge Functions
+      const supabaseUrl = 'https://xthmhwbgpdnknlrxiuzj.supabase.co';
+      const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh0aG1od2JncGRua25scnhpdXpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzY4OTQwMTYsImV4cCI6MjA1MjQ3MDAxNn0.f8tVEXYz_bwOuJUGdK8vXgRSQDdgqzlqKRDaKqSZSNQ';
+      
+      const response = await fetch(`${supabaseUrl}/functions/v1/unified-search`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${supabaseAnonKey}`,
         },
         body: JSON.stringify({
           query,
@@ -36,7 +41,9 @@ const Index = () => {
       });
 
       if (!response.ok) {
-        throw new Error(`Search failed: ${response.statusText}`);
+        const errorText = await response.text();
+        console.error('Search response error:', response.status, errorText);
+        throw new Error(`Search failed: ${response.status} ${response.statusText}`);
       }
 
       const data = await response.json();
