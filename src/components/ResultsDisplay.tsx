@@ -1,6 +1,8 @@
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { FileText, Building, Users, Calendar, DollarSign, AlertTriangle, CheckCircle, Scale, Gavel } from "lucide-react";
 import { SearchResult } from "@/pages/Index";
 
@@ -45,24 +47,38 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
     );
   }
 
+  // Combine profile and PPP results
+  const combinedResults = results.reduce((acc, result) => {
+    if (result.type === 'profile') {
+      const pppResult = results.find(r => r.type === 'ppp');
+      acc.push({
+        ...result,
+        pppData: pppResult?.data
+      });
+    } else if (result.type !== 'ppp') {
+      acc.push(result);
+    }
+    return acc;
+  }, [] as any[]);
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">Search Results</h2>
         <Badge variant="secondary" className="bg-gradient-to-r from-blue-100 to-purple-100 text-blue-800 border-blue-200">
-          {results.length} results found
+          {combinedResults.length} results found
         </Badge>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        {results.map((result) => (
+        {combinedResults.map((result) => (
           <Card key={result.id} className="hover:shadow-xl transition-all duration-300 flex flex-col border-0 shadow-lg bg-gradient-to-br from-white to-gray-50/50 hover:scale-[1.02]">
             {result.type === 'litigation' && (
               <>
                 <CardHeader className="pb-4 bg-gradient-to-br from-red-50 to-orange-50 rounded-t-lg">
                   <CardTitle className="flex items-center space-x-2 text-lg">
                     <div className="bg-gradient-to-br from-red-500 to-orange-500 p-2 rounded-lg">
-                      <FileText className="h-5 w-5 text-white flex-shrink-0" />
+                      <Gavel className="h-5 w-5 text-white flex-shrink-0" />
                     </div>
                     <span className="line-clamp-2 text-red-800">Class Action Litigation</span>
                   </CardTitle>
@@ -74,15 +90,27 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
                 <CardContent className="space-y-4 flex-grow">
                   <div className="space-y-3">
                     <div>
-                      <p className="font-semibold text-gray-700 text-sm">Court:</p>
-                      <p className="text-gray-600 text-sm line-clamp-2">{result.data.court}</p>
-                    </div>
-                    <div>
-                      <p className="font-semibold text-gray-700 text-sm">Filing Date:</p>
-                      <p className="text-gray-600 text-sm flex items-center">
-                        <Calendar className="h-3 w-3 mr-1 flex-shrink-0 text-red-500" />
-                        {result.data.filingDate}
-                      </p>
+                      <p className="font-semibold text-gray-700 mb-2 text-sm">Case Details:</p>
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead className="text-xs">Case #</TableHead>
+                            <TableHead className="text-xs">Jurisdiction</TableHead>
+                            <TableHead className="text-xs">Law Firm</TableHead>
+                            <TableHead className="text-xs">Filed</TableHead>
+                            <TableHead className="text-xs">Settled</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          <TableRow>
+                            <TableCell className="text-xs">1:23-cv-02156</TableCell>
+                            <TableCell className="text-xs">S.D.N.Y.</TableCell>
+                            <TableCell className="text-xs">Robbins Geller</TableCell>
+                            <TableCell className="text-xs">03/15/23</TableCell>
+                            <TableCell className="text-xs">Pending</TableCell>
+                          </TableRow>
+                        </TableBody>
+                      </Table>
                     </div>
                   </div>
                   <Separator className="bg-gradient-to-r from-red-200 to-orange-200" />
@@ -107,67 +135,12 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
               </>
             )}
 
-            {result.type === 'ppp' && (
-              <>
-                <CardHeader className="pb-4 bg-gradient-to-br from-green-50 to-emerald-50 rounded-t-lg">
-                  <CardTitle className="flex items-center space-x-2 text-lg">
-                    <div className="bg-gradient-to-br from-green-500 to-emerald-500 p-2 rounded-lg">
-                      <Building className="h-5 w-5 text-white flex-shrink-0" />
-                    </div>
-                    <span className="line-clamp-2 text-green-800">PPP Loan Record</span>
-                  </CardTitle>
-                  <Badge variant={result.data.forgiven ? 'default' : 'secondary'} className={`w-fit ${result.data.forgiven ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white' : ''}`}>
-                    {result.data.forgiven ? 'Forgiven' : 'Not Forgiven'}
-                  </Badge>
-                  <CardDescription className="line-clamp-2 text-green-700">{result.data.businessName}</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4 flex-grow">
-                  <div className="space-y-3">
-                    <div>
-                      <p className="font-semibold text-gray-700 text-sm">Loan Amount:</p>
-                      <p className="text-gray-600 text-sm flex items-center">
-                        <DollarSign className="h-3 w-3 mr-1 flex-shrink-0 text-green-500" />
-                        {result.data.loanAmount}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="font-semibold text-gray-700 text-sm">Approval Date:</p>
-                      <p className="text-gray-600 text-sm flex items-center">
-                        <Calendar className="h-3 w-3 mr-1 flex-shrink-0 text-green-500" />
-                        {result.data.approvalDate}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="font-semibold text-gray-700 text-sm">Jobs Reported:</p>
-                      <p className="text-gray-600 text-sm">{result.data.jobsReported}</p>
-                    </div>
-                  </div>
-                  <Separator className="bg-gradient-to-r from-green-200 to-emerald-200" />
-                  <div className="space-y-3">
-                    <div>
-                      <p className="font-semibold text-gray-700 text-sm">Lender:</p>
-                      <p className="text-gray-600 text-sm line-clamp-1">{result.data.lender}</p>
-                    </div>
-                    {result.data.forgiven && (
-                      <div>
-                        <p className="font-semibold text-gray-700 text-sm">Forgiveness Date:</p>
-                        <p className="text-gray-600 text-sm flex items-center">
-                          <CheckCircle className="h-3 w-3 mr-1 text-green-600 flex-shrink-0" />
-                          {result.data.forgivenessDate}
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                </CardContent>
-              </>
-            )}
-
             {result.type === 'profile' && (
               <>
                 <CardHeader className="pb-4 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-t-lg">
                   <CardTitle className="flex items-center space-x-2 text-lg">
                     <div className="bg-gradient-to-br from-blue-500 to-indigo-500 p-2 rounded-lg">
-                      <Users className="h-5 w-5 text-white flex-shrink-0" />
+                      <Building className="h-5 w-5 text-white flex-shrink-0" />
                     </div>
                     <span className="line-clamp-2 text-blue-800">Company Profile</span>
                   </CardTitle>
@@ -194,7 +167,6 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
                       <p className="text-gray-600 text-sm">{result.data.revenue}</p>
                     </div>
                   </div>
-                  <Separator className="bg-gradient-to-r from-blue-200 to-indigo-200" />
                   <div className="space-y-3">
                     <div>
                       <p className="font-semibold text-gray-700 text-sm">Headquarters:</p>
@@ -205,6 +177,56 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
                       <p className="text-gray-600 text-sm line-clamp-1">{result.data.website}</p>
                     </div>
                   </div>
+
+                  {result.pppData && (
+                    <>
+                      <Separator className="bg-gradient-to-r from-blue-200 to-green-200" />
+                      <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-4 rounded-lg">
+                        <div className="flex items-center space-x-2 mb-3">
+                          <div className="bg-gradient-to-br from-green-500 to-emerald-500 p-1 rounded">
+                            <Users className="h-4 w-4 text-white" />
+                          </div>
+                          <h4 className="font-semibold text-green-800 text-sm">PPP Loan Information</h4>
+                          <Badge variant={result.pppData.forgiven ? 'default' : 'secondary'} className={`text-xs ${result.pppData.forgiven ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white' : ''}`}>
+                            {result.pppData.forgiven ? 'Forgiven' : 'Not Forgiven'}
+                          </Badge>
+                        </div>
+                        <div className="grid grid-cols-2 gap-3 text-xs">
+                          <div>
+                            <p className="font-semibold text-gray-700">Loan Amount:</p>
+                            <p className="text-gray-600 flex items-center">
+                              <DollarSign className="h-3 w-3 mr-1 text-green-500" />
+                              {result.pppData.loanAmount}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="font-semibold text-gray-700">Jobs Reported:</p>
+                            <p className="text-gray-600">{result.pppData.jobsReported}</p>
+                          </div>
+                          <div>
+                            <p className="font-semibold text-gray-700">Approval Date:</p>
+                            <p className="text-gray-600 flex items-center">
+                              <Calendar className="h-3 w-3 mr-1 text-green-500" />
+                              {result.pppData.approvalDate}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="font-semibold text-gray-700">Lender:</p>
+                            <p className="text-gray-600 line-clamp-1">{result.pppData.lender}</p>
+                          </div>
+                          {result.pppData.forgiven && (
+                            <div className="col-span-2">
+                              <p className="font-semibold text-gray-700">Forgiveness Date:</p>
+                              <p className="text-gray-600 flex items-center">
+                                <CheckCircle className="h-3 w-3 mr-1 text-green-600" />
+                                {result.pppData.forgivenessDate}
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </>
+                  )}
                 </CardContent>
               </>
             )}
