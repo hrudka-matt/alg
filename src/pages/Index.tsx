@@ -33,7 +33,24 @@ const Index = () => {
           status: "Pending",
           allegations: "Securities fraud, misleading financial statements, failure to disclose material information",
           leadPlaintiff: "Teachers' Retirement System",
-          estimatedDamages: "$45.2M"
+          cases: [
+            {
+              caseNumber: "1:23-cv-02156",
+              jurisdiction: "S.D.N.Y.",
+              lawFirm: "Robbins Geller",
+              dateFiled: "03/15/23",
+              dateSettled: null,
+              allegations: "Securities fraud, misleading statements"
+            },
+            {
+              caseNumber: "2:23-cv-03421",
+              jurisdiction: "C.D. Cal.",
+              lawFirm: "Bernstein Litowitz",
+              dateFiled: "05/22/23",
+              dateSettled: null,
+              allegations: "Failure to disclose material information"
+            }
+          ]
         }
       });
     }
@@ -68,6 +85,7 @@ const Index = () => {
           founded: "1962",
           headquarters: "Bentonville, AR",
           website: "www.walmart.com",
+          locations: "10,585",
           description: "Multinational retail corporation operating hypermarkets, discount department stores, and grocery stores."
         }
       });

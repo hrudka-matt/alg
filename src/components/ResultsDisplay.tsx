@@ -100,6 +100,7 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
                               <TableHead className="text-xs p-2">Law Firm</TableHead>
                               <TableHead className="text-xs p-2">Filed</TableHead>
                               <TableHead className="text-xs p-2">Settled</TableHead>
+                              <TableHead className="text-xs p-2">Allegations</TableHead>
                             </TableRow>
                           </TableHeader>
                           <TableBody>
@@ -110,37 +111,37 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
                                 <TableCell className="text-xs p-2">{caseItem.lawFirm}</TableCell>
                                 <TableCell className="text-xs p-2">{caseItem.dateFiled}</TableCell>
                                 <TableCell className="text-xs p-2">{caseItem.dateSettled || 'Pending'}</TableCell>
+                                <TableCell className="text-xs p-2 max-w-xs">{caseItem.allegations}</TableCell>
                               </TableRow>
                             )) : (
-                              <TableRow>
-                                <TableCell className="text-xs p-2">1:23-cv-02156</TableCell>
-                                <TableCell className="text-xs p-2">S.D.N.Y.</TableCell>
-                                <TableCell className="text-xs p-2">Robbins Geller</TableCell>
-                                <TableCell className="text-xs p-2">03/15/23</TableCell>
-                                <TableCell className="text-xs p-2">Pending</TableCell>
-                              </TableRow>
+                              <>
+                                <TableRow>
+                                  <TableCell className="text-xs p-2">1:23-cv-02156</TableCell>
+                                  <TableCell className="text-xs p-2">S.D.N.Y.</TableCell>
+                                  <TableCell className="text-xs p-2">Robbins Geller</TableCell>
+                                  <TableCell className="text-xs p-2">03/15/23</TableCell>
+                                  <TableCell className="text-xs p-2">Pending</TableCell>
+                                  <TableCell className="text-xs p-2 max-w-xs">Securities fraud, misleading statements</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                  <TableCell className="text-xs p-2">2:23-cv-03421</TableCell>
+                                  <TableCell className="text-xs p-2">C.D. Cal.</TableCell>
+                                  <TableCell className="text-xs p-2">Bernstein Litowitz</TableCell>
+                                  <TableCell className="text-xs p-2">05/22/23</TableCell>
+                                  <TableCell className="text-xs p-2">Pending</TableCell>
+                                  <TableCell className="text-xs p-2 max-w-xs">Failure to disclose material information</TableCell>
+                                </TableRow>
+                              </>
                             )}
                           </TableBody>
                         </Table>
                       </div>
                     </div>
                   </div>
-                  <Separator className="bg-gradient-to-r from-red-200 to-orange-200" />
-                  <div>
-                    <p className="font-semibold text-gray-700 mb-2 text-sm">Allegations:</p>
-                    <p className="text-gray-600 text-sm line-clamp-3">{result.data.allegations}</p>
-                  </div>
                   <div className="space-y-3">
                     <div>
                       <p className="font-semibold text-gray-700 text-sm">Lead Plaintiff:</p>
                       <p className="text-gray-600 text-sm line-clamp-1">{result.data.leadPlaintiff}</p>
-                    </div>
-                    <div>
-                      <p className="font-semibold text-gray-700 text-sm">Estimated Damages:</p>
-                      <p className="text-gray-600 text-sm flex items-center">
-                        <DollarSign className="h-3 w-3 mr-1 flex-shrink-0 text-red-500" />
-                        {result.data.estimatedDamages}
-                      </p>
                     </div>
                   </div>
                 </CardContent>
