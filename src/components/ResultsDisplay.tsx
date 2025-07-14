@@ -220,7 +220,6 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
                     <TableHead className="text-xs p-2">Date Filed</TableHead>
                     <TableHead className="text-xs p-2">Law Firm</TableHead>
                     <TableHead className="text-xs p-2">Plaintiff</TableHead>
-                    <TableHead className="text-xs p-2">Court</TableHead>
                     <TableHead className="text-xs p-2">Status</TableHead>
                     <TableHead className="text-xs p-2">Est. Penalties</TableHead>
                     <TableHead className="text-xs p-2">COAs</TableHead>
@@ -237,7 +236,6 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
                       <TableCell className="text-xs p-2">{result.data.filingDate}</TableCell>
                       <TableCell className="text-xs p-2">{result.data.plaintiffAttorney}</TableCell>
                       <TableCell className="text-xs p-2">{result.data.businessName}</TableCell>
-                      <TableCell className="text-xs p-2 max-w-xs line-clamp-2">{result.data.court}</TableCell>
                       <TableCell className="text-xs p-2">
                         <Badge variant={result.data.status === 'Active' ? 'destructive' : 'secondary'} className="text-xs">
                           {result.data.status}
