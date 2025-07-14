@@ -1,10 +1,11 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { FileText, Building, Users, Calendar, DollarSign, AlertTriangle, CheckCircle, Scale, Gavel } from "lucide-react";
 import { SearchResult } from "@/pages/Index";
+import { CaseDetailsModal } from "./CaseDetailsModal";
+import { useState } from "react";
 
 interface ResultsDisplayProps {
   results: SearchResult[];
@@ -12,6 +13,19 @@ interface ResultsDisplayProps {
 }
 
 export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
+  const [selectedCase, setSelectedCase] = useState<any>(null);
+  const [isCaseModalOpen, setIsCaseModalOpen] = useState(false);
+
+  const handleCaseClick = (caseData: any) => {
+    setSelectedCase(caseData);
+    setIsCaseModalOpen(true);
+  };
+
+  const closeCaseModal = () => {
+    setIsCaseModalOpen(false);
+    setSelectedCase(null);
+  };
+
   if (isLoading) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
@@ -106,7 +120,14 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
                           <TableBody>
                             {result.data.cases ? result.data.cases.map((caseItem: any, index: number) => (
                               <TableRow key={index}>
-                                <TableCell className="text-xs p-2">{caseItem.caseNumber}</TableCell>
+                                <TableCell className="text-xs p-2">
+                                  <button
+                                    onClick={() => handleCaseClick(caseItem)}
+                                    className="text-blue-600 hover:text-blue-800 hover:underline font-mono"
+                                  >
+                                    {caseItem.caseNumber}
+                                  </button>
+                                </TableCell>
                                 <TableCell className="text-xs p-2">{caseItem.jurisdiction}</TableCell>
                                 <TableCell className="text-xs p-2">{caseItem.lawFirm}</TableCell>
                                 <TableCell className="text-xs p-2">{caseItem.dateFiled}</TableCell>
@@ -116,7 +137,21 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
                             )) : (
                               <>
                                 <TableRow>
-                                  <TableCell className="text-xs p-2">1:23-cv-02156</TableCell>
+                                  <TableCell className="text-xs p-2">
+                                    <button
+                                      onClick={() => handleCaseClick({
+                                        caseNumber: "1:23-cv-02156",
+                                        jurisdiction: "S.D.N.Y.",
+                                        lawFirm: "Robbins Geller",
+                                        dateFiled: "03/15/23",
+                                        dateSettled: null,
+                                        allegations: "Securities fraud, misleading statements"
+                                      })}
+                                      className="text-blue-600 hover:text-blue-800 hover:underline font-mono"
+                                    >
+                                      1:23-cv-02156
+                                    </button>
+                                  </TableCell>
                                   <TableCell className="text-xs p-2">S.D.N.Y.</TableCell>
                                   <TableCell className="text-xs p-2">Robbins Geller</TableCell>
                                   <TableCell className="text-xs p-2">03/15/23</TableCell>
@@ -124,7 +159,21 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
                                   <TableCell className="text-xs p-2 max-w-xs">Securities fraud, misleading statements</TableCell>
                                 </TableRow>
                                 <TableRow>
-                                  <TableCell className="text-xs p-2">2:23-cv-03421</TableCell>
+                                  <TableCell className="text-xs p-2">
+                                    <button
+                                      onClick={() => handleCaseClick({
+                                        caseNumber: "2:23-cv-03421",
+                                        jurisdiction: "C.D. Cal.",
+                                        lawFirm: "Bernstein Litowitz",
+                                        dateFiled: "05/22/23",
+                                        dateSettled: null,
+                                        allegations: "Failure to disclose material information"
+                                      })}
+                                      className="text-blue-600 hover:text-blue-800 hover:underline font-mono"
+                                    >
+                                      2:23-cv-03421
+                                    </button>
+                                  </TableCell>
                                   <TableCell className="text-xs p-2">C.D. Cal.</TableCell>
                                   <TableCell className="text-xs p-2">Bernstein Litowitz</TableCell>
                                   <TableCell className="text-xs p-2">05/22/23</TableCell>
@@ -304,6 +353,15 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
           </Card>
         ))}
       </div>
+
+      {/* Case Details Modal */}
+      {selectedCase && (
+        <CaseDetailsModal
+          isOpen={isCaseModalOpen}
+          onClose={closeCaseModal}
+          caseData={selectedCase}
+        />
+      )}
     </div>
   );
 };
