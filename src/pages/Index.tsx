@@ -18,46 +18,103 @@ const Index = () => {
   const [activeTab, setActiveTab] = useState("search");
   const { toast } = useToast();
 
+  const generateDummyData = (query: string, searchSources: any): SearchResult[] => {
+    const results: SearchResult[] = [];
+
+    // Generate litigation data if enabled
+    if (searchSources.litigation) {
+      results.push({
+        id: `litigation-${Date.now()}`,
+        type: 'litigation',
+        data: {
+          caseTitle: `Securities Class Action vs ${query}`,
+          court: "U.S. District Court, S.D.N.Y.",
+          filingDate: "2023-03-15",
+          status: "Pending",
+          allegations: "Securities fraud, misleading financial statements, failure to disclose material information",
+          leadPlaintiff: "Teachers' Retirement System",
+          estimatedDamages: "$45.2M"
+        }
+      });
+    }
+
+    // Generate PPP data if enabled
+    if (searchSources.ppp) {
+      results.push({
+        id: `ppp-${Date.now()}`,
+        type: 'ppp',
+        data: {
+          businessName: query,
+          loanAmount: "$150,000",
+          approvalDate: "2020-05-12",
+          lender: "Bank of America",
+          jobsReported: 25,
+          forgiven: true,
+          forgivenessDate: "2021-08-22"
+        }
+      });
+    }
+
+    // Generate profile data if enabled
+    if (searchSources.profile) {
+      results.push({
+        id: `profile-${Date.now()}`,
+        type: 'profile',
+        data: {
+          companyName: query,
+          industry: "Retail Trade",
+          employees: "2,300,000",
+          revenue: "$611.3B",
+          founded: "1962",
+          headquarters: "Bentonville, AR",
+          website: "www.walmart.com",
+          description: "Multinational retail corporation operating hypermarkets, discount department stores, and grocery stores."
+        }
+      });
+    }
+
+    // Generate PAGA data if enabled
+    if (searchSources.paga) {
+      results.push({
+        id: `paga-${Date.now()}`,
+        type: 'paga',
+        data: {
+          businessName: query,
+          filingDate: "2023-09-15",
+          court: "Superior Court of California, Los Angeles County",
+          caseNumber: "BC712345",
+          allegations: "Failure to provide meal and rest breaks, unpaid overtime wages, wage statement violations",
+          status: "Active",
+          plaintiffAttorney: "Smith & Associates",
+          estimatedPenalties: "$280,000",
+          affectedEmployees: 150
+        }
+      });
+    }
+
+    return results;
+  };
+
   const handleSearch = async (query: string, dateRange: { start: string; end: string }, searchSources: any) => {
     setIsLoading(true);
     
     try {
       console.log('Starting search for:', query);
+      console.log('Date range:', dateRange);
+      console.log('Search sources:', searchSources);
       
-      // Use the Supabase project URL for Edge Functions
-      const supabaseUrl = 'https://xthmhwbgpdnknlrxiuzj.supabase.co';
-      const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh0aG1od2JncGRua25scnhpdXpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzY4OTQwMTYsImV4cCI6MjA1MjQ3MDAxNn0.f8tVEXYz_bwOuJUGdK8vXgRSQDdgqzlqKRDaKqSZSNQ';
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 1500));
       
-      const response = await fetch(`${supabaseUrl}/functions/v1/unified-search`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${supabaseAnonKey}`,
-        },
-        body: JSON.stringify({
-          query,
-          dateRange,
-          searchSources
-        })
-      });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('Search response error:', response.status, errorText);
-        throw new Error(`Search failed: ${response.status} ${response.statusText}`);
-      }
-
-      const data = await response.json();
-      console.log('Search results:', data);
-      
-      setSearchResults(data.results || []);
+      const dummyResults = generateDummyData(query, searchSources);
+      setSearchResults(dummyResults);
       
       // Switch to results tab after successful search
       setActiveTab("results");
       
       toast({
         title: "Search completed",
-        description: `Found ${data.results?.length || 0} results for "${query}"`,
+        description: `Found ${dummyResults.length} results for "${query}"`,
       });
       
     } catch (error) {
