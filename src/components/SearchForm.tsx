@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,7 +23,7 @@ export const SearchForm = ({ onSearch, isLoading }: SearchFormProps) => {
     litigation: true,
     ppp: true,
     profile: true,
-    paga: true
+    paga: false
   });
 
   // Set default date range to last 5 years
