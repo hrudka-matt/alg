@@ -85,19 +85,19 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
       {/* Company Profile Cards - Full Width */}
       {combinedProfileData.map((result) => (
         <Card key={result.id} className="hover:shadow-xl transition-all duration-300 border-0 shadow-lg bg-gradient-to-br from-white to-gray-50/50 hover:scale-[1.01]">
-          <CardHeader className="pb-3 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-t-lg">
+          <CardHeader className="pb-2 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-t-lg">
             <div className="flex items-center space-x-3">
               <div className="bg-gradient-to-br from-blue-500 to-indigo-500 p-2 rounded-lg">
                 <Building className="h-5 w-5 text-white flex-shrink-0" />
               </div>
               <div>
-                <h2 className="text-xl font-bold text-blue-900">{result.data.companyName}</h2>
-                <p className="text-sm text-blue-700">Company Profile</p>
+                <h2 className="text-lg font-bold text-blue-900">{result.data.companyName}</h2>
+                <p className="text-xs text-blue-700">Company Profile</p>
               </div>
             </div>
           </CardHeader>
-          <CardContent className="space-y-3 py-4">
-            <div className="grid grid-cols-3 md:grid-cols-6 gap-3 text-xs">
+          <CardContent className="space-y-2 py-3">
+            <div className="grid grid-cols-3 md:grid-cols-6 gap-2 text-xs">
               <div>
                 <p className="font-semibold text-gray-700">Industry:</p>
                 <p className="text-gray-600 line-clamp-1">{result.data.industry}</p>
@@ -124,7 +124,7 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
               </div>
             </div>
             
-            <div className="flex flex-wrap gap-4 text-xs">
+            <div className="flex flex-wrap gap-3 text-xs">
               <div>
                 <p className="font-semibold text-gray-700">Headquarters:</p>
                 <p className="text-gray-600">{result.data.headquarters}</p>
@@ -146,7 +146,7 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
             {result.pppData && (
               <>
                 <Separator className="bg-gradient-to-r from-blue-200 to-green-200" />
-                <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-3 rounded-lg">
+                <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-2 rounded-lg">
                   <div className="flex items-center space-x-2 mb-2">
                     <div className="bg-gradient-to-br from-green-500 to-emerald-500 p-1 rounded">
                       <Users className="h-4 w-4 text-white" />
@@ -156,7 +156,7 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
                       {result.pppData.forgiven ? 'Forgiven' : 'Not Forgiven'}
                     </Badge>
                   </div>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
                     <div>
                       <p className="font-semibold text-gray-700">Loan Amount:</p>
                       <p className="text-gray-600 flex items-center">
@@ -220,8 +220,6 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
                     <TableHead className="text-xs p-2">Date Filed</TableHead>
                     <TableHead className="text-xs p-2">Law Firm</TableHead>
                     <TableHead className="text-xs p-2">Plaintiff</TableHead>
-                    <TableHead className="text-xs p-2">Status</TableHead>
-                    <TableHead className="text-xs p-2">Est. Penalties</TableHead>
                     <TableHead className="text-xs p-2">COAs</TableHead>
                   </TableRow>
                 </TableHeader>
@@ -236,17 +234,6 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
                       <TableCell className="text-xs p-2">{result.data.filingDate}</TableCell>
                       <TableCell className="text-xs p-2">{result.data.plaintiffAttorney}</TableCell>
                       <TableCell className="text-xs p-2">{result.data.businessName}</TableCell>
-                      <TableCell className="text-xs p-2">
-                        <Badge variant={result.data.status === 'Active' ? 'destructive' : 'secondary'} className="text-xs">
-                          {result.data.status}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="text-xs p-2">
-                        <span className="flex items-center">
-                          <DollarSign className="h-3 w-3 mr-1 text-purple-500" />
-                          {result.data.estimatedPenalties}
-                        </span>
-                      </TableCell>
                       <TableCell className="text-xs p-2 max-w-xs line-clamp-3">{result.data.coas}</TableCell>
                     </TableRow>
                   ))}
