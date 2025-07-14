@@ -2,7 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { FileText, Building, Users, Calendar, DollarSign, AlertTriangle, CheckCircle, Scale, Gavel } from "lucide-react";
+import { FileText, Building, Users, Calendar, DollarSign, AlertTriangle, CheckCircle, Scale, Gavel, ExternalLink } from "lucide-react";
 import { SearchResult } from "@/pages/Index";
 import { CaseDetailsModal } from "./CaseDetailsModal";
 import { useState } from "react";
@@ -237,6 +237,20 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
               <div>
                 <p className="font-semibold text-gray-700 text-sm">Headquarters:</p>
                 <p className="text-gray-600 text-sm line-clamp-1">{result.data.headquarters}</p>
+              </div>
+
+              {/* Secretary of State Profile Link */}
+              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-3 rounded-lg">
+                <p className="font-semibold text-gray-700 text-sm mb-2">Secretary of State:</p>
+                <a
+                  href={`https://www.sos.state.ar.us/corps/search_all.php?corp-search=${encodeURIComponent(result.data.companyName)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center text-blue-600 hover:text-blue-800 text-sm hover:underline"
+                >
+                  View Business Profile
+                  <ExternalLink className="h-3 w-3 ml-1" />
+                </a>
               </div>
 
               {result.pppData && (
