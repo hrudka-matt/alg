@@ -13,7 +13,7 @@ interface ResultsDisplayProps {
 export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
   if (isLoading) {
     return (
-      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
         {[1, 2, 3].map((i) => (
           <Card key={i} className="animate-pulse">
             <CardHeader>
@@ -51,31 +51,31 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
         <Badge variant="secondary">{results.length} results found</Badge>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
         {results.map((result) => (
-          <Card key={result.id} className="hover:shadow-md transition-shadow h-fit">
+          <Card key={result.id} className="hover:shadow-lg transition-shadow duration-200 flex flex-col">
             {result.type === 'litigation' && (
               <>
-                <CardHeader>
+                <CardHeader className="pb-4">
                   <CardTitle className="flex items-center space-x-2 text-lg">
-                    <FileText className="h-5 w-5 text-red-600" />
-                    <span>Class Action Litigation</span>
+                    <FileText className="h-5 w-5 text-red-600 flex-shrink-0" />
+                    <span className="line-clamp-2">Class Action Litigation</span>
                   </CardTitle>
                   <Badge variant={result.data.status === 'Pending' ? 'destructive' : 'secondary'} className="w-fit">
                     {result.data.status}
                   </Badge>
-                  <CardDescription>{result.data.caseTitle}</CardDescription>
+                  <CardDescription className="line-clamp-2">{result.data.caseTitle}</CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-4 flex-grow">
                   <div className="space-y-3">
                     <div>
                       <p className="font-semibold text-gray-700 text-sm">Court:</p>
-                      <p className="text-gray-600 text-sm">{result.data.court}</p>
+                      <p className="text-gray-600 text-sm line-clamp-2">{result.data.court}</p>
                     </div>
                     <div>
                       <p className="font-semibold text-gray-700 text-sm">Filing Date:</p>
                       <p className="text-gray-600 text-sm flex items-center">
-                        <Calendar className="h-3 w-3 mr-1" />
+                        <Calendar className="h-3 w-3 mr-1 flex-shrink-0" />
                         {result.data.filingDate}
                       </p>
                     </div>
@@ -83,17 +83,17 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
                   <Separator />
                   <div>
                     <p className="font-semibold text-gray-700 mb-2 text-sm">Allegations:</p>
-                    <p className="text-gray-600 text-sm">{result.data.allegations}</p>
+                    <p className="text-gray-600 text-sm line-clamp-3">{result.data.allegations}</p>
                   </div>
                   <div className="space-y-3">
                     <div>
                       <p className="font-semibold text-gray-700 text-sm">Lead Plaintiff:</p>
-                      <p className="text-gray-600 text-sm">{result.data.leadPlaintiff}</p>
+                      <p className="text-gray-600 text-sm line-clamp-1">{result.data.leadPlaintiff}</p>
                     </div>
                     <div>
                       <p className="font-semibold text-gray-700 text-sm">Estimated Damages:</p>
                       <p className="text-gray-600 text-sm flex items-center">
-                        <DollarSign className="h-3 w-3 mr-1" />
+                        <DollarSign className="h-3 w-3 mr-1 flex-shrink-0" />
                         {result.data.estimatedDamages}
                       </p>
                     </div>
@@ -104,29 +104,29 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
 
             {result.type === 'ppp' && (
               <>
-                <CardHeader>
+                <CardHeader className="pb-4">
                   <CardTitle className="flex items-center space-x-2 text-lg">
-                    <Building className="h-5 w-5 text-green-600" />
-                    <span>PPP Loan Record</span>
+                    <Building className="h-5 w-5 text-green-600 flex-shrink-0" />
+                    <span className="line-clamp-2">PPP Loan Record</span>
                   </CardTitle>
                   <Badge variant={result.data.forgiven ? 'default' : 'secondary'} className="w-fit">
                     {result.data.forgiven ? 'Forgiven' : 'Not Forgiven'}
                   </Badge>
-                  <CardDescription>{result.data.businessName}</CardDescription>
+                  <CardDescription className="line-clamp-2">{result.data.businessName}</CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-4 flex-grow">
                   <div className="space-y-3">
                     <div>
                       <p className="font-semibold text-gray-700 text-sm">Loan Amount:</p>
                       <p className="text-gray-600 text-sm flex items-center">
-                        <DollarSign className="h-3 w-3 mr-1" />
+                        <DollarSign className="h-3 w-3 mr-1 flex-shrink-0" />
                         {result.data.loanAmount}
                       </p>
                     </div>
                     <div>
                       <p className="font-semibold text-gray-700 text-sm">Approval Date:</p>
                       <p className="text-gray-600 text-sm flex items-center">
-                        <Calendar className="h-3 w-3 mr-1" />
+                        <Calendar className="h-3 w-3 mr-1 flex-shrink-0" />
                         {result.data.approvalDate}
                       </p>
                     </div>
@@ -139,13 +139,13 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
                   <div className="space-y-3">
                     <div>
                       <p className="font-semibold text-gray-700 text-sm">Lender:</p>
-                      <p className="text-gray-600 text-sm">{result.data.lender}</p>
+                      <p className="text-gray-600 text-sm line-clamp-1">{result.data.lender}</p>
                     </div>
                     {result.data.forgiven && (
                       <div>
                         <p className="font-semibold text-gray-700 text-sm">Forgiveness Date:</p>
                         <p className="text-gray-600 text-sm flex items-center">
-                          <CheckCircle className="h-3 w-3 mr-1 text-green-600" />
+                          <CheckCircle className="h-3 w-3 mr-1 text-green-600 flex-shrink-0" />
                           {result.data.forgivenessDate}
                         </p>
                       </div>
@@ -157,18 +157,18 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
 
             {result.type === 'profile' && (
               <>
-                <CardHeader>
+                <CardHeader className="pb-4">
                   <CardTitle className="flex items-center space-x-2 text-lg">
-                    <Users className="h-5 w-5 text-blue-600" />
-                    <span>Company Profile</span>
+                    <Users className="h-5 w-5 text-blue-600 flex-shrink-0" />
+                    <span className="line-clamp-2">Company Profile</span>
                   </CardTitle>
-                  <CardDescription>{result.data.companyName}</CardDescription>
+                  <CardDescription className="line-clamp-2">{result.data.companyName}</CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-4 flex-grow">
                   <div className="space-y-3">
                     <div>
                       <p className="font-semibold text-gray-700 text-sm">Industry:</p>
-                      <p className="text-gray-600 text-sm">{result.data.industry}</p>
+                      <p className="text-gray-600 text-sm line-clamp-1">{result.data.industry}</p>
                     </div>
                     <div>
                       <p className="font-semibold text-gray-700 text-sm">Founded:</p>
@@ -189,11 +189,11 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
                   <div className="space-y-3">
                     <div>
                       <p className="font-semibold text-gray-700 text-sm">Headquarters:</p>
-                      <p className="text-gray-600 text-sm">{result.data.headquarters}</p>
+                      <p className="text-gray-600 text-sm line-clamp-1">{result.data.headquarters}</p>
                     </div>
                     <div>
                       <p className="font-semibold text-gray-700 text-sm">Website:</p>
-                      <p className="text-gray-600 text-sm">{result.data.website}</p>
+                      <p className="text-gray-600 text-sm line-clamp-1">{result.data.website}</p>
                     </div>
                   </div>
                 </CardContent>
