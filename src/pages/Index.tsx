@@ -3,7 +3,6 @@ import { useState } from "react";
 import { SearchForm } from "@/components/SearchForm";
 import { ResultsDisplay } from "@/components/ResultsDisplay";
 import { Header } from "@/components/Header";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 
 export interface SearchResult {
@@ -15,7 +14,6 @@ export interface SearchResult {
 const Index = () => {
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState("search");
   const { toast } = useToast();
 
   const generateDummyData = (query: string, searchSources: any): SearchResult[] => {
@@ -31,8 +29,7 @@ const Index = () => {
           court: "U.S. District Court, S.D.N.Y.",
           filingDate: "2023-03-15",
           status: "Pending",
-          allegations: "Securities fraud, misleading financial statements, failure to disclose material information",
-          leadPlaintiff: "Teachers' Retirement System",
+          coas: "Securities fraud, misleading financial statements, failure to disclose material information",
           cases: [
             {
               caseNumber: "1:23-cv-02156",
@@ -40,7 +37,7 @@ const Index = () => {
               lawFirm: "Robbins Geller",
               dateFiled: "03/15/23",
               dateSettled: null,
-              allegations: "Securities fraud, misleading statements"
+              coas: "Securities fraud, misleading statements"
             },
             {
               caseNumber: "2:23-cv-03421",
@@ -48,7 +45,15 @@ const Index = () => {
               lawFirm: "Bernstein Litowitz",
               dateFiled: "05/22/23",
               dateSettled: null,
-              allegations: "Failure to disclose material information"
+              coas: "Failure to disclose material information"
+            },
+            {
+              caseNumber: "3:23-cv-04789",
+              jurisdiction: "N.D. Ill.",
+              lawFirm: "Kessler Topaz",
+              dateFiled: "08/10/23",
+              dateSettled: "12/15/23",
+              coas: "Breach of fiduciary duty, unjust enrichment"
             }
           ]
         }
@@ -101,7 +106,7 @@ const Index = () => {
           filingDate: "2023-09-15",
           court: "Superior Court of California, Los Angeles County",
           caseNumber: "BC712345",
-          allegations: "Failure to provide meal and rest breaks, unpaid overtime wages, wage statement violations",
+          coas: "Failure to provide meal and rest breaks, unpaid overtime wages, wage statement violations",
           status: "Active",
           plaintiffAttorney: "Smith & Associates",
           estimatedPenalties: "$280,000",
@@ -126,9 +131,6 @@ const Index = () => {
       
       const dummyResults = generateDummyData(query, searchSources);
       setSearchResults(dummyResults);
-      
-      // Switch to results tab after successful search
-      setActiveTab("results");
       
       toast({
         title: "Search completed",
@@ -162,30 +164,10 @@ const Index = () => {
             </p>
           </div>
 
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-8 bg-white/80 backdrop-blur-sm">
-              <TabsTrigger 
-                value="search" 
-                className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-purple-500 data-[state=active]:text-white"
-              >
-                Search & Research
-              </TabsTrigger>
-              <TabsTrigger 
-                value="results"
-                className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-indigo-500 data-[state=active]:text-white"
-              >
-                Results & Analysis
-              </TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="search" className="space-y-6">
-              <SearchForm onSearch={handleSearch} isLoading={isLoading} />
-            </TabsContent>
-            
-            <TabsContent value="results" className="space-y-6">
-              <ResultsDisplay results={searchResults} isLoading={isLoading} />
-            </TabsContent>
-          </Tabs>
+          <div className="space-y-8">
+            <SearchForm onSearch={handleSearch} isLoading={isLoading} />
+            <ResultsDisplay results={searchResults} isLoading={isLoading} />
+          </div>
         </div>
       </main>
     </div>

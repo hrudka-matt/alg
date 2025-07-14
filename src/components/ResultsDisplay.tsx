@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -114,7 +115,7 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
                               <TableHead className="text-xs p-2">Law Firm</TableHead>
                               <TableHead className="text-xs p-2">Filed</TableHead>
                               <TableHead className="text-xs p-2">Settled</TableHead>
-                              <TableHead className="text-xs p-2">Allegations</TableHead>
+                              <TableHead className="text-xs p-2">COAs</TableHead>
                             </TableRow>
                           </TableHeader>
                           <TableBody>
@@ -132,7 +133,7 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
                                 <TableCell className="text-xs p-2">{caseItem.lawFirm}</TableCell>
                                 <TableCell className="text-xs p-2">{caseItem.dateFiled}</TableCell>
                                 <TableCell className="text-xs p-2">{caseItem.dateSettled || 'Pending'}</TableCell>
-                                <TableCell className="text-xs p-2 max-w-xs">{caseItem.allegations}</TableCell>
+                                <TableCell className="text-xs p-2 max-w-xs">{caseItem.coas}</TableCell>
                               </TableRow>
                             )) : (
                               <>
@@ -145,7 +146,7 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
                                         lawFirm: "Robbins Geller",
                                         dateFiled: "03/15/23",
                                         dateSettled: null,
-                                        allegations: "Securities fraud, misleading statements"
+                                        coas: "Securities fraud, misleading statements"
                                       })}
                                       className="text-blue-600 hover:text-blue-800 hover:underline font-mono"
                                     >
@@ -167,7 +168,7 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
                                         lawFirm: "Bernstein Litowitz",
                                         dateFiled: "05/22/23",
                                         dateSettled: null,
-                                        allegations: "Failure to disclose material information"
+                                        coas: "Failure to disclose material information"
                                       })}
                                       className="text-blue-600 hover:text-blue-800 hover:underline font-mono"
                                     >
@@ -185,12 +186,6 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
                           </TableBody>
                         </Table>
                       </div>
-                    </div>
-                  </div>
-                  <div className="space-y-3">
-                    <div>
-                      <p className="font-semibold text-gray-700 text-sm">Lead Plaintiff:</p>
-                      <p className="text-gray-600 text-sm line-clamp-1">{result.data.leadPlaintiff}</p>
                     </div>
                   </div>
                 </CardContent>
@@ -327,8 +322,8 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
                   </div>
                   <Separator className="bg-gradient-to-r from-purple-200 to-violet-200" />
                   <div>
-                    <p className="font-semibold text-gray-700 mb-2 text-sm">Allegations:</p>
-                    <p className="text-gray-600 text-sm line-clamp-3">{result.data.allegations}</p>
+                    <p className="font-semibold text-gray-700 mb-2 text-sm">COAs:</p>
+                    <p className="text-gray-600 text-sm line-clamp-3">{result.data.coas}</p>
                   </div>
                   <div className="space-y-3">
                     <div>

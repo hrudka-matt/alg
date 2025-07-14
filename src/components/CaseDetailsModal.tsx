@@ -15,7 +15,7 @@ interface CaseDetailsModalProps {
     lawFirm: string;
     dateFiled: string;
     dateSettled?: string;
-    allegations: string;
+    coas: string;
   };
 }
 
@@ -150,8 +150,8 @@ export const CaseDetailsModal = ({ isOpen, onClose, caseData }: CaseDetailsModal
               </div>
             </div>
             <div className="mt-3">
-              <p className="font-semibold text-gray-700 mb-1">Allegations:</p>
-              <p className="text-gray-600 text-sm">{caseData.allegations}</p>
+              <p className="font-semibold text-gray-700 mb-1">COAs:</p>
+              <p className="text-gray-600 text-sm">{caseData.coas}</p>
             </div>
           </div>
 
