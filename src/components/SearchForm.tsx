@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,7 +11,7 @@ import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 
 interface SearchFormProps {
-  onSearch: (query: string, dateRange: { start: string; end: string }) => void;
+  onSearch: (query: string, dateRange: { start: string; end: string }, searchSources: any) => void;
   isLoading: boolean;
 }
 
@@ -39,7 +38,7 @@ export const SearchForm = ({ onSearch, isLoading }: SearchFormProps) => {
       end: endDate ? format(endDate, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd")
     };
 
-    onSearch(query, dateRange);
+    onSearch(query, dateRange, searchSources);
   };
 
   return (

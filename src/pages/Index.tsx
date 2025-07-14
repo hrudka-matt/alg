@@ -1,9 +1,9 @@
-
 import { useState } from "react";
 import { SearchForm } from "@/components/SearchForm";
 import { ResultsDisplay } from "@/components/ResultsDisplay";
 import { Header } from "@/components/Header";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useToast } from "@/hooks/use-toast";
 
 export interface SearchResult {
   id: string;
@@ -15,57 +15,50 @@ const Index = () => {
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("search");
+  const { toast } = useToast();
 
-  const handleSearch = async (query: string, dateRange: { start: string; end: string }) => {
+  const handleSearch = async (query: string, dateRange: { start: string; end: string }, searchSources: any) => {
     setIsLoading(true);
     
     try {
-      // Simulate API calls - in real implementation, these would call actual APIs
-      const mockResults: SearchResult[] = [
-        {
-          id: "1",
-          type: "litigation",
-          data: {
-            caseTitle: "Securities Class Action vs " + query,
-            court: "U.S. District Court, S.D.N.Y.",
-            filingDate: "2023-03-15",
-            status: "Pending",
-            allegations: "Securities fraud, misleading financial statements",
-            leadPlaintiff: "Pension Fund XYZ",
-            estimatedDamages: "$45.2M"
-          }
-        },
-        {
-          id: "2",
-          type: "ppp",
-          data: {
-            businessName: query,
-            loanAmount: "$150,000",
-            approvalDate: "2020-05-12",
-            lender: "Bank of America",
-            jobsReported: 25,
-            forgiven: true,
-            forgivenessDate: "2021-08-22"
-          }
-        },
-        {
-          id: "3",
-          type: "profile",
-          data: {
-            companyName: query,
-            industry: "Technology",
-            employees: "1,000-5,000",
-            revenue: "$50M-$100M",
-            founded: "2015",
-            headquarters: "San Francisco, CA",
-            website: "www.example.com"
-          }
-        }
-      ];
+      console.log('Starting search for:', query);
       
-      setSearchResults(mockResults);
+      const response = await fetch('/functions/v1/unified-search', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          query,
+          dateRange,
+          searchSources
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`Search failed: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      console.log('Search results:', data);
+      
+      setSearchResults(data.results || []);
+      
+      // Switch to results tab after successful search
+      setActiveTab("results");
+      
+      toast({
+        title: "Search completed",
+        description: `Found ${data.results?.length || 0} results for "${query}"`,
+      });
+      
     } catch (error) {
       console.error("Search error:", error);
+      toast({
+        title: "Search failed",
+        description: "Unable to complete search. Please try again.",
+        variant: "destructive",
+      });
     } finally {
       setIsLoading(false);
     }
