@@ -4,21 +4,28 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-import { CalendarIcon, Search, Building, FileText, Users, Scale } from "lucide-react";
-import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { format } from "date-fns";
-import { cn } from "@/lib/utils";
+import { Search, Building, FileText, Users, Scale } from "lucide-react";
+
+interface SearchSources {
+  litigation: boolean;
+  ppp: boolean;
+  profile: boolean;
+  paga: boolean;
+}
 
 interface SearchFormProps {
-  onSearch: (query: string, dateRange: { start: string; end: string }, searchSources: any) => void;
+  onSearch: (query: string, dateRange: { start: string; end: string }, searchSources: SearchSources) => void;
   isLoading: boolean;
 }
 
 export const SearchForm = ({ onSearch, isLoading }: SearchFormProps) => {
   const [query, setQuery] = useState("");
-  const [startDate, setStartDate] = useState<Date>();
-  const [endDate, setEndDate] = useState<Date>();
+  const [startDate, setStartDate] = useState(() => {
+    const fiveYearsAgo = new Date();
+    fiveYearsAgo.setFullYear(fiveYearsAgo.getFullYear() - 5);
+    return fiveYearsAgo.toISOString().split('T')[0];
+  });
+  const [endDate, setEndDate] = useState(() => new Date().toISOString().split('T')[0]);
   const [searchSources, setSearchSources] = useState({
     litigation: true,
     ppp: true,
@@ -26,165 +33,153 @@ export const SearchForm = ({ onSearch, isLoading }: SearchFormProps) => {
     paga: false
   });
 
-  // Set default date range to last 5 years
-  const defaultStartDate = new Date();
-  defaultStartDate.setFullYear(defaultStartDate.getFullYear() - 5);
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!query.trim()) return;
 
     const dateRange = {
-      start: startDate ? format(startDate, "yyyy-MM-dd") : format(defaultStartDate, "yyyy-MM-dd"),
-      end: endDate ? format(endDate, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd")
+      start: startDate,
+      end: endDate
     };
 
     onSearch(query, dateRange, searchSources);
   };
 
   return (
-    <Card className="w-full">
-      <CardHeader>
-        <CardTitle className="flex items-center space-x-2">
-          <Search className="h-5 w-5" />
-          <span>Company Research</span>
-        </CardTitle>
-        <CardDescription>
+    <Card className="w-full bg-white rounded-lg shadow-md border border-gray-300">
+      <CardContent className="p-8">
+        <div className="flex items-center gap-3 mb-2">
+          <span className="text-2xl">🔍</span>
+          <h2 className="text-xl font-bold text-gray-700">Company Research</h2>
+        </div>
+        <p className="text-gray-500 text-sm mb-6">
           Search across litigation records, PPP loans, PAGA filings, and company profiles
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
+        </p>
+
         <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Company Name - Full width */}
           <div className="space-y-2">
-            <Label htmlFor="company">Company Name</Label>
+            <Label htmlFor="company" className="block text-sm font-medium text-gray-700">
+              Company Name
+            </Label>
             <Input
               id="company"
               placeholder="Enter company name..."
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              className="w-full"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all duration-200 text-gray-900 bg-white"
             />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Date Range - Side by side */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <Label>Start Date (Default: 5 years ago)</Label>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className={cn(
-                      "w-full justify-start text-left font-normal",
-                      !startDate && "text-muted-foreground"
-                    )}
-                  >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
-                    {startDate ? format(startDate, "PPP") : format(defaultStartDate, "PPP")}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0">
-                  <Calendar
-                    mode="single"
-                    selected={startDate}
-                    onSelect={setStartDate}
-                    initialFocus
-                    className="pointer-events-auto"
-                  />
-                </PopoverContent>
-              </Popover>
+              <Label htmlFor="startDate" className="block text-sm font-medium text-gray-700">
+                Start Date <span className="text-gray-400 font-normal">(Default: 5 years ago)</span>
+              </Label>
+              <Input
+                id="startDate"
+                type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all duration-200 text-gray-900 bg-white"
+              />
             </div>
 
             <div className="space-y-2">
-              <Label>End Date (Default: Today)</Label>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className={cn(
-                      "w-full justify-start text-left font-normal",
-                      !endDate && "text-muted-foreground"
-                    )}
-                  >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
-                    {endDate ? format(endDate, "PPP") : format(new Date(), "PPP")}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0">
-                  <Calendar
-                    mode="single"
-                    selected={endDate}
-                    onSelect={setEndDate}
-                    initialFocus
-                    className="pointer-events-auto"
-                  />
-                </PopoverContent>
-              </Popover>
+              <Label htmlFor="endDate" className="block text-sm font-medium text-gray-700">
+                End Date <span className="text-gray-400 font-normal">(Default: Today)</span>
+              </Label>
+              <Input
+                id="endDate"
+                type="date"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all duration-200 text-gray-900 bg-white"
+              />
             </div>
           </div>
 
+          {/* Data Sources */}
           <div className="space-y-4">
-            <Label>Data Sources</Label>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="flex items-center space-x-2">
+            <h3 className="text-base font-medium text-gray-700">Data Sources</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+              <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-md cursor-pointer hover:bg-gray-100 transition-colors border border-gray-200">
                 <Checkbox
                   id="litigation"
                   checked={searchSources.litigation}
                   onCheckedChange={(checked) =>
                     setSearchSources(prev => ({ ...prev, litigation: checked as boolean }))
                   }
+                  className="w-4 h-4"
                 />
-                <Label htmlFor="litigation" className="flex items-center space-x-2">
-                  <FileText className="h-4 w-4" />
-                  <span>Trellis Litigation</span>
+                <Label htmlFor="litigation" className="flex items-center space-x-2 cursor-pointer">
+                  <span className="text-sm">📋</span>
+                  <span className="text-sm font-medium text-gray-700">Trellis Litigation</span>
                 </Label>
               </div>
 
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-md cursor-pointer hover:bg-gray-100 transition-colors border border-gray-200">
                 <Checkbox
                   id="ppp"
                   checked={searchSources.ppp}
                   onCheckedChange={(checked) =>
                     setSearchSources(prev => ({ ...prev, ppp: checked as boolean }))
                   }
+                  className="w-4 h-4"
                 />
-                <Label htmlFor="ppp" className="flex items-center space-x-2">
-                  <Building className="h-4 w-4" />
-                  <span>PPP Loans</span>
+                <Label htmlFor="ppp" className="flex items-center space-x-2 cursor-pointer">
+                  <span className="text-sm">💰</span>
+                  <span className="text-sm font-medium text-gray-700">PPP Loans</span>
                 </Label>
               </div>
 
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-md cursor-pointer hover:bg-gray-100 transition-colors border border-gray-200">
                 <Checkbox
                   id="profile"
                   checked={searchSources.profile}
                   onCheckedChange={(checked) =>
                     setSearchSources(prev => ({ ...prev, profile: checked as boolean }))
                   }
+                  className="w-4 h-4"
                 />
-                <Label htmlFor="profile" className="flex items-center space-x-2">
-                  <Users className="h-4 w-4" />
-                  <span>People Data Labs</span>
+                <Label htmlFor="profile" className="flex items-center space-x-2 cursor-pointer">
+                  <span className="text-sm">👥</span>
+                  <span className="text-sm font-medium text-gray-700">People Data Labs</span>
                 </Label>
               </div>
 
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-md cursor-pointer hover:bg-gray-100 transition-colors border border-gray-200">
                 <Checkbox
                   id="paga"
                   checked={searchSources.paga}
                   onCheckedChange={(checked) =>
                     setSearchSources(prev => ({ ...prev, paga: checked as boolean }))
                   }
+                  className="w-4 h-4"
                 />
-                <Label htmlFor="paga" className="flex items-center space-x-2">
-                  <Scale className="h-4 w-4" />
-                  <span>PAGA Filings</span>
+                <Label htmlFor="paga" className="flex items-center space-x-2 cursor-pointer">
+                  <span className="text-sm">📊</span>
+                  <span className="text-sm font-medium text-gray-700">PAGA Filings</span>
                 </Label>
               </div>
             </div>
           </div>
 
-          <Button type="submit" className="w-full" disabled={isLoading}>
-            {isLoading ? "Searching..." : "Search All Sources"}
+          {/* Search Button */}
+          <Button 
+            type="submit" 
+            className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-medium py-3 px-6 rounded-md transition-all duration-200 disabled:cursor-not-allowed" 
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <div className="flex items-center justify-center gap-2">
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                Searching...
+              </div>
+            ) : (
+              "🔍 Search All Sources"
+            )}
           </Button>
         </form>
       </CardContent>

@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -8,17 +7,69 @@ import { SearchResult } from "@/pages/Index";
 import { CaseDetailsModal } from "./CaseDetailsModal";
 import { useState } from "react";
 
+interface CaseData {
+  caseNumber: string;
+  jurisdiction?: string;
+  lawFirm: string;
+  category: string;
+  dateFiled: string;
+  dateSettled?: string | null;
+  coas: string;
+  isClassAction?: boolean;
+  case_token?: string;
+}
+
 interface ResultsDisplayProps {
   results: SearchResult[];
   isLoading: boolean;
 }
 
 export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
-  const [selectedCase, setSelectedCase] = useState<any>(null);
+  const [selectedCase, setSelectedCase] = useState<{
+    caseNumber: string;
+    jurisdiction: string;
+    lawFirm: string;
+    dateFiled: string;
+    dateSettled?: string;
+    coas: string;
+    category?: string;
+    caseToken?: string;
+  } | null>(null);
   const [isCaseModalOpen, setIsCaseModalOpen] = useState(false);
 
-  const handleCaseClick = (caseData: any) => {
-    setSelectedCase(caseData);
+  const handleCaseClick = (caseData: CaseData, companyResult?: SearchResult) => {
+    // Find the case_token from the backend data
+    let caseToken: string | undefined = undefined;
+    
+    // Look for case_token in the result data structure
+    if (companyResult?.data?.case_token) {
+      caseToken = companyResult.data.case_token;
+    }
+    
+    // If that doesn't work, try to find it in the cases array
+    if (!caseToken && companyResult?.data?.cases) {
+      const matchingCase = companyResult.data.cases.find((c) => 
+        c.caseNumber === caseData.caseNumber
+      );
+      if (matchingCase) {
+        caseToken = matchingCase.case_token;
+      }
+    }
+    
+    console.log('Case clicked:', caseData.caseNumber, 'Token found:', caseToken);
+    
+    // Convert CaseData to CaseDetailsModal format
+    const modalCaseData = {
+      caseNumber: caseData.caseNumber,
+      jurisdiction: caseData.jurisdiction || 'CA',
+      lawFirm: caseData.lawFirm,
+      dateFiled: caseData.dateFiled,
+      dateSettled: caseData.dateSettled || undefined,
+      coas: caseData.coas,
+      category: caseData.category,
+      caseToken: caseToken // Add the case token for docket fetching
+    };
+    setSelectedCase(modalCaseData);
     setIsCaseModalOpen(true);
   };
 
@@ -78,7 +129,7 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">Search Results</h2>
-        <Badge variant="secondary" className="bg-gradient-to-r from-accent to-secondary text-foreground border-border">
+        <Badge className="bg-gradient-to-r from-accent to-secondary text-foreground border-border">
           {results.length} results found
         </Badge>
       </div>
@@ -133,7 +184,7 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
               <div>
                 <p className="font-semibold text-foreground">Secretary of State:</p>
                 <a
-                  href={`https://www.sos.state.ar.us/corps/search_all.php?corp-search=${encodeURIComponent(result.data.companyName)}`}
+                  href={`https://www.sos.state.ar.us/corps/search_all.php?corp-search=${encodeURIComponent(result.data.companyName || '')}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center text-primary hover:text-primary/80 hover:underline"
@@ -153,7 +204,7 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
                       <Users className="h-4 w-4 text-primary-foreground" />
                     </div>
                     <h4 className="font-semibold text-foreground text-sm">PPP Loan Information</h4>
-                    <Badge variant={result.pppData.forgiven ? 'default' : 'secondary'} className={`text-xs ${result.pppData.forgiven ? 'bg-gradient-to-r from-primary to-primary/80 text-primary-foreground' : ''}`}>
+                    <Badge className={`text-xs ${result.pppData.forgiven ? 'bg-gradient-to-r from-primary to-primary/80 text-primary-foreground' : 'bg-secondary'}`}>
                       {result.pppData.forgiven ? 'Forgiven' : 'Not Forgiven'}
                     </Badge>
                   </div>
@@ -207,7 +258,7 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
               </div>
               <span className="line-clamp-2 text-foreground">PAGA Filings</span>
             </CardTitle>
-            <Badge variant="secondary" className="w-fit bg-primary text-primary-foreground">
+            <Badge className="w-fit bg-primary text-primary-foreground">
               {pagaResults.length} filing{pagaResults.length !== 1 ? 's' : ''} found
             </Badge>
             <CardDescription className="line-clamp-2 text-muted-foreground">Private Attorneys General Act filings</CardDescription>
@@ -229,13 +280,13 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
                     <TableRow key={index}>
                       <TableCell className="text-xs p-2">
                         <span className="font-mono text-primary">
-                          {result.data.caseNumber}
+                          {result.data.caseNumber || 'N/A'}
                         </span>
                       </TableCell>
-                      <TableCell className="text-xs p-2">{result.data.filingDate}</TableCell>
-                      <TableCell className="text-xs p-2">{result.data.plaintiffAttorney}</TableCell>
-                      <TableCell className="text-xs p-2">{result.data.businessName}</TableCell>
-                      <TableCell className="text-xs p-2 max-w-xs line-clamp-3">{result.data.coas}</TableCell>
+                      <TableCell className="text-xs p-2">{result.data.filingDate || 'N/A'}</TableCell>
+                      <TableCell className="text-xs p-2">{result.data.plaintiffAttorney || result.data.lawFirm || 'N/A'}</TableCell>
+                      <TableCell className="text-xs p-2">{result.data.businessName || result.data.companyName || 'N/A'}</TableCell>
+                      <TableCell className="text-xs p-2 max-w-xs line-clamp-3">{result.data.coas || 'N/A'}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -255,7 +306,7 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
               </div>
               <span className="line-clamp-2 text-foreground">Employment Litigation</span>
             </CardTitle>
-            <Badge variant={result.data.status === 'Pending' ? 'destructive' : 'secondary'} className="w-fit bg-gradient-to-r from-primary to-primary/80 text-primary-foreground">
+            <Badge className="w-fit bg-gradient-to-r from-primary to-primary/80 text-primary-foreground">
               {result.data.status}
             </Badge>
             <CardDescription className="line-clamp-2 text-muted-foreground">{result.data.caseTitle}</CardDescription>
@@ -278,11 +329,11 @@ export const ResultsDisplay = ({ results, isLoading }: ResultsDisplayProps) => {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {result.data.cases ? result.data.cases.map((caseItem: any, index: number) => (
+                      {result.data.cases ? result.data.cases.map((caseItem: CaseData, index: number) => (
                         <TableRow key={index}>
                           <TableCell className="text-xs p-2">
                             <button
-                              onClick={() => handleCaseClick(caseItem)}
+                              onClick={() => handleCaseClick(caseItem, result)} // Pass the full result object
                               className="text-primary hover:text-primary/80 hover:underline font-mono"
                             >
                               {caseItem.caseNumber}
